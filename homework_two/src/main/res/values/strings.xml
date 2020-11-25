@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AlexHomework</string>
+    <string name="warning">Числа сгенерированы, обработаны и готовы к выводу. Нажмите кнопку, чтобы продолжить.</string>
+    <string name="result">Результат</string>
+    <string name="generated_numbers">Сгенерированные числа:</string>
+    <string name="sum">Сумма чисел = </string>
+    <string name="arithmetic_mean">Среднее арифметическое чисел =</string>
+    <string name="devision">Результат деления одной части на другую =</string>
+    <string name="generate_numbers">Сгенерировать числа</string>
+</resources>
