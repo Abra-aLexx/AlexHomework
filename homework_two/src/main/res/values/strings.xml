@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AlexHomework</string>
+    <string name="app_name">Homework2</string>
     <string name="warning">Числа сгенерированы, обработаны и готовы к выводу. Нажмите кнопку, чтобы продолжить.</string>
     <string name="result">Результат</string>
     <string name="generated_numbers">Сгенерированные числа:</string>
