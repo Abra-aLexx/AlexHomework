@@ -1,110 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/imagePhoto1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/stalker"
-        android:contentDescription="@string/picture"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/picture"
+        android:src="@drawable/stalker" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_photo_camera_48"
-        android:contentDescription="@string/icon"
+        android:layout_alignBottom="@id/imagePhoto1"
+        android:layout_alignParentEnd="true"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@id/imagePhoto1"/>
+        android:contentDescription="@string/icon"
+        android:src="@drawable/ic_baseline_photo_camera_48" />
+
     <EditText
         android:id="@+id/etTitle1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/title"
-        android:textColorHint="@color/gray"
-        android:textSize="22sp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="15dp"
-        android:autofillHints="@string/title"
         android:layout_below="@id/imagePhoto1"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        android:autofillHints="@string/title"
+        android:hint="@string/title"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp" />
+
     <EditText
         android:id="@+id/etPrice1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/price"
-        android:textColorHint="@color/gray"
-        android:textSize="22sp"
-        android:ems="5"
-        android:autofillHints="@string/price"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="15dp"
         android:layout_below="@id/etTitle1"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:autofillHints="@string/price"
+        android:ems="5"
+        android:hint="@string/price"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp" />
+
     <EditText
         android:id="@+id/etLocation1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/location"
-        android:textColorHint="@color/gray"
+        android:layout_below="@id/etTitle1"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="20dp"
-        android:textSize="22sp"
-        android:drawableEnd="@drawable/ic_baseline_location_on_24"
-        android:drawablePadding="110dp"
-        android:autofillHints="@string/location"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="15dp"
-        android:layout_below="@id/etTitle1"
-        android:layout_alignParentEnd="true"/>
+        android:autofillHints="@string/location"
+        android:drawableEnd="@drawable/ic_baseline_location_on_24"
+        android:drawablePadding="110dp"
+        android:hint="@string/location"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp" />
+
     <EditText
         android:id="@+id/etDescription1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/description"
-        android:textColorHint="@color/gray"
-        android:textSize="22sp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="15dp"
-        android:autofillHints="@string/description"
         android:layout_below="@id/etPrice1"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        android:autofillHints="@string/description"
+        android:hint="@string/description"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp" />
+
     <EditText
         android:id="@+id/etInventory1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/inventory"
-        android:textColorHint="@color/gray"
-        android:textSize="22sp"
-        android:ems="5"
-        android:layout_gravity="start"
-        android:autofillHints="@string/inventory"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="15dp"
+        android:layout_below="@id/etDescription1"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/etDescription1"/>
+        android:layout_gravity="start"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:autofillHints="@string/inventory"
+        android:ems="5"
+        android:hint="@string/inventory"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp" />
+
     <EditText
         android:id="@+id/etWe1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/weight"
-        android:textColorHint="@color/gray"
-        android:textSize="22sp"
-        android:ems="5"
+        android:layout_below="@id/etDescription1"
+        android:layout_alignParentEnd="true"
         android:layout_gravity="end"
-        android:autofillHints="@string/weight"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="15dp"
-        android:layout_below="@id/etDescription1"
-        android:layout_alignParentEnd="true"/>
+        android:autofillHints="@string/weight"
+        android:ems="5"
+        android:hint="@string/weight"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp" />
 </RelativeLayout>

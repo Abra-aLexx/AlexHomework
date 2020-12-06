@@ -1,260 +1,259 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/tvAndroid1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/android"
-            android:textColor="@color/black"
-            android:textSize="38sp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/ivAvatar1"
-            android:layout_width="124dp"
-            android:layout_height="124dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:contentDescription="@string/picture"
-            android:src="@drawable/icon1"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/tvAndroid1"
-            />
+    <TextView
+        android:id="@+id/tvAndroid1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/android"
+        android:textColor="@color/black"
+        android:textSize="38sp" />
 
-        <TextView
-            android:id="@+id/tvPosts1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="3"
-            android:gravity="center"
-            android:text="@string/_100_n_posts"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_toEndOf="@id/ivAvatar1"
-            android:layout_alignTop="@id/tvFollowing1"/>
+    <ImageView
+        android:id="@+id/ivAvatar1"
+        android:layout_width="124dp"
+        android:layout_height="124dp"
+        android:layout_below="@id/tvAndroid1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/picture"
+        android:src="@drawable/icon1" />
 
-        <TextView
-            android:id="@+id/tvFollowers1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="4"
-            android:gravity="center"
-            android:text="@string/_1b_followers"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_toStartOf="@id/tvFollowing1"
-            android:layout_alignTop="@id/tvFollowing1"/>
+    <TextView
+        android:id="@+id/tvPosts1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tvFollowing1"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@id/ivAvatar1"
+        android:ems="3"
+        android:gravity="center"
+        android:text="@string/_100_n_posts"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvFollowing1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
-            android:ems="4"
-            android:gravity="center"
-            android:text="@string/_1k_following"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@id/tvAndroid1"/>
+    <TextView
+        android:id="@+id/tvFollowers1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tvFollowing1"
+        android:layout_gravity="center"
+        android:layout_toStartOf="@id/tvFollowing1"
+        android:ems="4"
+        android:gravity="center"
+        android:text="@string/_1b_followers"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvUsername1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/username"
-            android:textSize="20sp"
-            android:layout_below="@id/ivAvatar1"
-            android:layout_alignParentStart="true" />
+    <TextView
+        android:id="@+id/tvFollowing1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvAndroid1"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="10dp"
+        android:ems="4"
+        android:gravity="center"
+        android:text="@string/_1k_following"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvAddress1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="5"
-            android:text="@string/address_description"
-            android:textSize="20sp"
-            android:layout_below="@id/tvUsername1"
-            android:layout_alignParentStart="true"/>
+    <TextView
+        android:id="@+id/tvUsername1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivAvatar1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/username"
+        android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/ivRadio1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_radio_48"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/tvAddress1"/>
+    <TextView
+        android:id="@+id/tvAddress1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvUsername1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:ems="5"
+        android:text="@string/address_description"
+        android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/ivFavorite1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_favorite_48"
-            android:layout_toEndOf="@id/ivRadio1"
-            android:layout_alignTop="@id/ivRadio1"
-            />
+    <ImageView
+        android:id="@+id/ivRadio1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvAddress1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/icon"
+        android:src="@drawable/ic_baseline_radio_48" />
 
-        <ImageView
-            android:id="@+id/ivDomain1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_domain_48"
-            android:layout_toEndOf="@id/ivFavorite1"
-            android:layout_alignTop="@id/ivFavorite1"/>
+    <ImageView
+        android:id="@+id/ivFavorite1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/ivRadio1"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@id/ivRadio1"
+        android:contentDescription="@string/icon"
+        android:src="@drawable/ic_baseline_favorite_48" />
 
-        <ImageView
-            android:id="@+id/ivBook1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_book_48"
-            android:layout_toEndOf="@id/ivDomain1"
-            android:layout_alignTop="@id/ivDomain1" />
+    <ImageView
+        android:id="@+id/ivDomain1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/ivFavorite1"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@id/ivFavorite1"
+        android:contentDescription="@string/icon"
+        android:src="@drawable/ic_baseline_domain_48" />
 
-        <ImageView
-            android:id="@+id/ivBike1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_directions_bike_48"
-            android:layout_toEndOf="@id/ivBook1"
-            android:layout_alignTop="@id/ivBook1"/>
+    <ImageView
+        android:id="@+id/ivBook1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/ivDomain1"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@id/ivDomain1"
+        android:contentDescription="@string/icon"
+        android:src="@drawable/ic_baseline_book_48" />
 
-        <ImageView
-            android:id="@+id/ivPeople"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_people_48"
-            android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@id/ivBike1"
-            android:layout_alignTop="@id/ivBike1"/>
+    <ImageView
+        android:id="@+id/ivBike1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/ivBook1"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@id/ivBook1"
+        android:contentDescription="@string/icon"
+        android:src="@drawable/ic_baseline_directions_bike_48" />
 
-        <TextView
-            android:id="@+id/tvDirections1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:drawablePadding="10dp"
-            android:gravity="center"
-            android:text="@string/directions"
-            android:textColor="@color/blue"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:drawableTopCompat="@drawable/ic_baseline_directions_24"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/ivRadio1"
-             />
+    <ImageView
+        android:id="@+id/ivPeople"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/ivBike1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@id/ivBike1"
+        android:contentDescription="@string/icon"
+        android:src="@drawable/ic_baseline_people_48" />
 
-        <TextView
-            android:id="@+id/tvCall1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:drawablePadding="10dp"
-            android:gravity="center"
-            android:text="@string/call"
-            android:textColor="@color/blue"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_toEndOf="@id/tvDirections1"
-            android:layout_alignTop="@id/tvDirections1"
-            app:drawableTopCompat="@drawable/ic_baseline_call_24" />
+    <TextView
+        android:id="@+id/tvDirections1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivRadio1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:text="@string/directions"
+        android:textColor="@color/blue"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:drawableTopCompat="@drawable/ic_baseline_directions_24" />
 
-        <TextView
-            android:id="@+id/tvSave1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:drawablePadding="10dp"
-            android:gravity="center"
-            android:text="@string/save"
-            android:textColor="@color/blue"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_toEndOf="@id/tvCall1"
-            android:layout_alignTop="@id/tvCall1"
-            app:drawableTopCompat="@drawable/ic_baseline_star_24" />
+    <TextView
+        android:id="@+id/tvCall1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tvDirections1"
+        android:layout_marginStart="30dp"
+        android:layout_toEndOf="@id/tvDirections1"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:text="@string/call"
+        android:textColor="@color/blue"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:drawableTopCompat="@drawable/ic_baseline_call_24" />
 
-        <TextView
-            android:id="@+id/tvWebsite1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
-            android:gravity="center"
-            android:text="@string/website"
-            android:textColor="@color/blue"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginStart="30dp"
-            android:layout_toEndOf="@id/tvSave1"
-            android:layout_alignTop="@id/tvSave1"
-            app:drawableTopCompat="@drawable/ic_baseline_insert_link_24" />
+    <TextView
+        android:id="@+id/tvSave1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tvCall1"
+        android:layout_marginStart="40dp"
+        android:layout_toEndOf="@id/tvCall1"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:text="@string/save"
+        android:textColor="@color/blue"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:drawableTopCompat="@drawable/ic_baseline_star_24" />
 
-        <ImageView
-            android:id="@+id/ivLine1"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:contentDescription="@string/line"
-            android:src="@drawable/line"
-            android:layout_below="@id/tvDirections1"
-            android:layout_centerInParent="true"/>
+    <TextView
+        android:id="@+id/tvWebsite1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tvSave1"
+        android:layout_marginStart="30dp"
+        android:layout_toEndOf="@id/tvSave1"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:text="@string/website"
+        android:textColor="@color/blue"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:drawableTopCompat="@drawable/ic_baseline_insert_link_24" />
 
-        <ImageView
-            android:id="@+id/ivFirstIcon1"
-            android:layout_width="124dp"
-            android:layout_height="124dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="30dp"
-            android:contentDescription="@string/picture"
-            android:src="@drawable/icon2"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/ivLine1" />
+    <ImageView
+        android:id="@+id/ivLine1"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/tvDirections1"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/line"
+        android:src="@drawable/line" />
 
-        <ImageView
-            android:id="@+id/ivSecondIcon1"
-            android:layout_width="124dp"
-            android:layout_height="124dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:contentDescription="@string/picture"
-            android:src="@drawable/icon3"
-            android:layout_toEndOf="@id/ivFirstIcon1"
-            android:layout_alignTop="@id/ivFirstIcon1" />
+    <ImageView
+        android:id="@+id/ivFirstIcon1"
+        android:layout_width="124dp"
+        android:layout_height="124dp"
+        android:layout_below="@id/ivLine1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:contentDescription="@string/picture"
+        android:src="@drawable/icon2" />
 
-        <ImageView
-            android:id="@+id/ivThirdIcon1"
-            android:layout_width="124dp"
-            android:layout_height="124dp"
-            android:layout_marginEnd="10dp"
-            android:contentDescription="@string/picture"
-            android:src="@drawable/icon4"
-            android:layout_toEndOf="@id/ivSecondIcon1"
-            android:layout_alignTop="@id/ivSecondIcon1" />
+    <ImageView
+        android:id="@+id/ivSecondIcon1"
+        android:layout_width="124dp"
+        android:layout_height="124dp"
+        android:layout_alignTop="@id/ivFirstIcon1"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/ivFirstIcon1"
+        android:contentDescription="@string/picture"
+        android:src="@drawable/icon3" />
+
+    <ImageView
+        android:id="@+id/ivThirdIcon1"
+        android:layout_width="124dp"
+        android:layout_height="124dp"
+        android:layout_alignTop="@id/ivSecondIcon1"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/ivSecondIcon1"
+        android:contentDescription="@string/picture"
+        android:src="@drawable/icon4" />
 </RelativeLayout>

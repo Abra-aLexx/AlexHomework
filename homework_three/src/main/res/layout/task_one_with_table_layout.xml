@@ -1,165 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TableRow>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_folder_48"/>
+            android:src="@drawable/ic_baseline_folder_48" />
+
         <TextView
-            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/attractions"/>
+            android:text="@string/attractions"
+            android:textSize="24sp" />
     </TableRow>
+
     <TableRow>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_local_dining_48"/>
+            android:src="@drawable/ic_baseline_local_dining_48" />
+
         <TextView
-            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/dining"/>
+            android:text="@string/dining"
+            android:textSize="24sp" />
     </TableRow>
+
     <TableRow>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_school_48"/>
+            android:src="@drawable/ic_baseline_school_48" />
+
         <TextView
-            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/education"/>
+            android:text="@string/education"
+            android:textSize="24sp" />
     </TableRow>
+
     <TableRow>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_people_48"/>
+            android:src="@drawable/ic_baseline_people_48" />
+
         <TextView
-            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/family"/>
+            android:text="@string/family"
+            android:textSize="24sp" />
     </TableRow>
+
     <TableRow>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_favorite_48"/>
+            android:src="@drawable/ic_baseline_favorite_48" />
+
         <TextView
-            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/health"/>
+            android:text="@string/health"
+            android:textSize="24sp" />
     </TableRow>
+
     <TableRow>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_domain_48"/>
+            android:src="@drawable/ic_baseline_domain_48" />
+
         <TextView
-            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/office"/>
+            android:text="@string/office"
+            android:textSize="24sp" />
     </TableRow>
+
     <TableRow>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_shopping_cart_48"/>
+            android:src="@drawable/ic_baseline_shopping_cart_48" />
+
         <TextView
-            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/promotions"/>
+            android:text="@string/promotions"
+            android:textSize="24sp" />
     </TableRow>
+
     <TableRow>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_radio_48"/>
+            android:src="@drawable/ic_baseline_radio_48" />
+
         <TextView
-            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/radio"/>
+            android:text="@string/radio"
+            android:textSize="24sp" />
     </TableRow>
+
     <TableRow>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_book_48"/>
+            android:src="@drawable/ic_baseline_book_48" />
+
         <TextView
-            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/recipes"/>
+            android:text="@string/recipes"
+            android:textSize="24sp" />
     </TableRow>
+
     <TableRow>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/ic_baseline_directions_bike_48"/>
+            android:src="@drawable/ic_baseline_directions_bike_48" />
+
         <TextView
-            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/sports"/>
+            android:text="@string/sports"
+            android:textSize="24sp" />
     </TableRow>
 </TableLayout>
