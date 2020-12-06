@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:src="@drawable/stalker"
+        android:contentDescription="@string/picture"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_baseline_photo_camera_48"
+            android:contentDescription="@string/picture"/>
+</FrameLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/title"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="15dp"
+        android:autofillHints="@string/title" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/price"
+            android:textColorHint="@color/gray"
+            android:textSize="22sp"
+            android:ems="5"
+            android:autofillHints="@string/price" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/location"
+            android:textColorHint="@color/gray"
+            android:layout_marginStart="20dp"
+            android:textSize="22sp"
+            android:drawableEnd="@drawable/ic_baseline_location_on_24"
+            android:drawablePadding="110dp"
+            android:autofillHints="@string/location" />
+
+    </LinearLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/description"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="15dp"
+        android:autofillHints="@string/description" />
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="15dp"
+    android:layout_marginStart="15dp"
+    android:layout_marginTop="30dp">
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/inventory"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp"
+        android:ems="5"
+        android:layout_gravity="start"
+        android:autofillHints="@string/inventory" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/weight"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp"
+        android:ems="5"
+        android:layout_gravity="end"
+        android:autofillHints="@string/weight"/>
+
+</FrameLayout>
+
+</LinearLayout>
