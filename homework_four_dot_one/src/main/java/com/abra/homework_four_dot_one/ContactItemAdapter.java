@@ -56,6 +56,7 @@ public class ContactItemAdapter extends RecyclerView.Adapter<ContactItemAdapter.
     }
 
     public void add(ContactItem contactItem) {
+        // лист contactItemListFull нужен для фильтрации
         contactItemList.add(contactItem);
         contactItemListFull.add(contactItem);
         notifyItemChanged(contactItemList.indexOf(contactItem));
