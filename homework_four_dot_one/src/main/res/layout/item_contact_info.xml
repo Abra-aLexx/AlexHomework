@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:background="@drawable/shape1"
+        android:contentDescription="@string/content_description"
         android:src="@drawable/icon_email" />
 
     <LinearLayout

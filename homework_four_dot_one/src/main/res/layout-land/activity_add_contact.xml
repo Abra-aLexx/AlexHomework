@@ -88,6 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/name"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
@@ -98,6 +99,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/phone_number"
+        android:importantForAutofill="no"
         android:inputType="phone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextName" />
