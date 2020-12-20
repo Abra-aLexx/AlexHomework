@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:contentDescription="@string/picture"
+            android:src="@drawable/stalker" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/picture"
+            android:src="@drawable/ic_baseline_photo_camera_48" />
+    </FrameLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        android:autofillHints="@string/title"
+        android:hint="@string/title"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autofillHints="@string/price"
+            android:ems="5"
+            android:hint="@string/price"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/gray"
+            android:textSize="22sp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:autofillHints="@string/location"
+            android:drawableEnd="@drawable/ic_baseline_location_on_24"
+            android:drawablePadding="110dp"
+            android:hint="@string/location"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/gray"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        android:autofillHints="@string/description"
+        android:hint="@string/description"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/gray"
+        android:textSize="22sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:autofillHints="@string/inventory"
+            android:ems="5"
+            android:hint="@string/inventory"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/gray"
+            android:textSize="22sp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:autofillHints="@string/weight"
+            android:ems="5"
+            android:hint="@string/weight"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/gray"
+            android:textSize="22sp" />
+
+    </FrameLayout>
+
+</LinearLayout>
