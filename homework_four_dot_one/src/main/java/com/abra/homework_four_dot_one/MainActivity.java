@@ -12,9 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         searchView = findViewById(R.id.searchView);
         if (savedInstanceState != null) {
-            contactItemAdapter = new ContactItemAdapter(this, savedInstanceState.getParcelableArrayList("list"));
+            contactItemAdapter = new ContactItemAdapter(savedInstanceState.getParcelableArrayList("list"));
         } else {
-            contactItemAdapter = new ContactItemAdapter(this, new ArrayList<>());
+            contactItemAdapter = new ContactItemAdapter(new ArrayList<>());
         }
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
         recyclerView.setAdapter(contactItemAdapter);
@@ -53,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         }
+        contactItemAdapter.setOnItemClickListener(((contactItem, position) -> {
+            Intent intent = new Intent(this, EditContactActivity.class);
+            intent.putExtra("position", position);
+            intent.putExtra("contactItem", contactItem);
+            startActivityForResult(intent, ACTIVITY_EDIT);
+        }));
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

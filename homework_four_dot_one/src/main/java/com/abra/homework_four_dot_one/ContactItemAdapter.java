@@ -1,48 +1,38 @@
 package com.abra.homework_four_dot_one;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class ContactItemAdapter extends RecyclerView.Adapter<ContactItemAdapter.ContactItemViewHolder> implements Filterable {
     private final ArrayList<ContactItem> contactItemList;
     private final ArrayList<ContactItem> contactItemListFull;
-    private final Activity context;
+    private OnItemClickListener onItemClickListener;
 
     public ArrayList<ContactItem> getContactItemList() {
         return contactItemList;
     }
 
-    public ContactItemAdapter(Activity context, ArrayList<ContactItem> contactItemList) {
+    public ContactItemAdapter(ArrayList<ContactItem> contactItemList) {
         this.contactItemList = contactItemList;
         contactItemListFull = new ArrayList<>(contactItemList);
-        this.context = context;
     }
 
     @NonNull
     @Override
     public ContactItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_contact_info, parent, false);
-        return new ContactItemViewHolder(view, context);
+        return new ContactItemViewHolder(view, onItemClickListener);
     }
 
     @Override
@@ -56,7 +46,6 @@ public class ContactItemAdapter extends RecyclerView.Adapter<ContactItemAdapter.
     }
 
     public void add(ContactItem contactItem) {
-        // лист contactItemListFull нужен для фильтрации
         contactItemList.add(contactItem);
         contactItemListFull.add(contactItem);
         notifyItemChanged(contactItemList.indexOf(contactItem));
@@ -106,24 +95,21 @@ public class ContactItemAdapter extends RecyclerView.Adapter<ContactItemAdapter.
         }
     };
 
-    static class ContactItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class ContactItemViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
         private final TextView name;
         private final TextView info;
-        private final Activity context;
-        private ContactItem contactItem;
+        private final OnItemClickListener onItemClickListener;
 
-        public ContactItemViewHolder(@NonNull View itemView, Activity context) {
+        public ContactItemViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             name = itemView.findViewById(R.id.tvName);
             info = itemView.findViewById(R.id.tvInfo);
-            this.context = context;
-            itemView.setOnClickListener(this);
+            this.onItemClickListener = onItemClickListener;
         }
 
         void bind(ContactItem contactItem) {
-            this.contactItem = contactItem;
             imageView.setImageResource(contactItem.getIconId());
             switch (contactItem.getTypeInfo()) {
                 case "phone": {
@@ -135,16 +121,20 @@ public class ContactItemAdapter extends RecyclerView.Adapter<ContactItemAdapter.
                     break;
                 }
             }
+            if (onItemClickListener != null)
+                itemView.setOnClickListener(view -> {
+                    onItemClickListener.onItemClick(contactItem, getAdapterPosition());
+                });
             name.setText(contactItem.getName());
             info.setText(contactItem.getInfo());
         }
+    }
 
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(context, EditContactActivity.class);
-            intent.putExtra("position", getAdapterPosition());
-            intent.putExtra("contactItem", contactItem);
-            context.startActivityForResult(intent, 2);
-        }
+    interface OnItemClickListener {
+        void onItemClick(ContactItem contactItem, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }

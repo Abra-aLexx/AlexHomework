@@ -1,6 +1,5 @@
 package com.abra.homework_four_dot_one;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -8,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.text.InputType;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -53,10 +51,7 @@ public class AddContactActivity extends AppCompatActivity {
             }
         });
         imgBack.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.putExtra("flag", true);
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+            showActivity(null, true);
         });
         imgAdd.setOnClickListener(view -> {
             int iconId = 0;
@@ -76,20 +71,18 @@ public class AddContactActivity extends AppCompatActivity {
             String textName = name.getText().toString();
             String textInfo = info.getText().toString();
             if (!textName.equals("") && !textInfo.equals("")) {
-                Intent intent = new Intent();
-                intent.putExtra("flag", false);
-                intent.putExtra("contactItem", new ContactItem(iconId, textName, textInfo, typeInfo));
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+                showActivity(new ContactItem(iconId, textName, textInfo, typeInfo), false);
             } else {
                 Toast.makeText(this, "Fields can't be empty!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-
+    private void showActivity(ContactItem contactItem, boolean flag) {
+        Intent intent = new Intent();
+        if (!flag) intent.putExtra("contactItem", contactItem);
+        intent.putExtra("flag", flag);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 }
