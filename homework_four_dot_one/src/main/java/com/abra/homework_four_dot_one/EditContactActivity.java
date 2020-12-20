@@ -53,27 +53,26 @@ public class EditContactActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     private void setListeners(int position) {
         imageButtonBack.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
             int iconId = contactItem.getIconId();
             String typeInfo = contactItem.getTypeInfo();
             String textName = name.getText().toString();
             String textInfo = info.getText().toString();
             if (!textName.equals("") && !textInfo.equals("")) {
-                intent.putExtra("contactItem", new ContactItem(iconId, textName, textInfo, typeInfo));
-                intent.putExtra("position", position);
-                intent.putExtra("isRemoved", false);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+                showActivity(new ContactItem(iconId, textName, textInfo, typeInfo),position,false);
             } else {
                 Toast.makeText(this, "Fields can't be empty!", Toast.LENGTH_SHORT).show();
             }
         });
         btRemove.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("position", position);
-            intent.putExtra("isRemoved", true);
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+            showActivity(null,position,true);
         });
+    }
+    private void showActivity(ContactItem contactItem, int position, boolean isRemoved) {
+        Intent intent = new Intent();
+        if (!isRemoved) intent.putExtra("contactItem", contactItem);
+        intent.putExtra("isRemoved", isRemoved);
+        intent.putExtra("position", position);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 }
