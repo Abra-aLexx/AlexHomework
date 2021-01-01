@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditWorkActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBarEditWork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imgButtonBackToWorkList1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/primary"
+                android:contentDescription="@string/button"
+                android:src="@drawable/ic_baseline_arrow_back_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:gravity="center"
+                android:text="@string/add_work"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/imgButtonApplyToWorkList1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/primary"
+                    android:contentDescription="@string/button"
+                    android:src="@drawable/ic_baseline_check_24" />
+                <ImageButton
+                    android:id="@+id/imgButtonRemove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="24dp"
+                    android:background="@color/primary"
+                    android:contentDescription="@string/button"
+                    android:src="@drawable/ic_baseline_delete_forever_24" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/tvDate1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBarEditWork" />
+
+    <TextView
+        android:id="@+id/tvWorkName1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        android:text="@string/work_name"
+        android:textColor="@color/accent"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDate1" />
+
+    <EditText
+        android:id="@+id/etWorkName1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="@color/accent"
+        android:backgroundTintMode="add"
+        android:ems="10"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:paddingBottom="20dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWorkName1"
+        tools:ignore="LabelFor" />
+
+    <TextView
+        android:id="@+id/tvWorkCost1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/cost"
+        android:textColor="@color/accent"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/etWorkCost1"
+        app:layout_constraintTop_toBottomOf="@id/tvDate1" />
+
+    <EditText
+        android:id="@+id/etWorkCost1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/accent"
+        android:backgroundTintMode="add"
+        android:ems="5"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:paddingBottom="20dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWorkName1"
+        tools:ignore="LabelFor" />
+
+    <TextView
+        android:id="@+id/tvWorkDescription1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:text="@string/description"
+        android:textColor="@color/accent"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etWorkName1" />
+
+    <EditText
+        android:id="@+id/etWorkDescription1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/accent"
+        android:backgroundTintMode="add"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:paddingBottom="20dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWorkDescription1"
+        tools:ignore="LabelFor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etWorkDescription1">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/ivPending1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/icon"
+                android:src="@drawable/ic_baseline_handyman_48_default"/>
+            <TextView
+                android:id="@+id/tvPending1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/pending"
+                android:layout_gravity="center"
+                android:textColor="@color/icon_work_default_color"
+                />
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:contentDescription="@string/icon"
+            android:src="@drawable/ic_baseline_arrow_forward_36" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/icon"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/ivInProgress1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/icon"
+                android:src="@drawable/ic_baseline_handyman_48_default" />
+            <TextView
+                android:id="@+id/tvInProgress1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/in_progress_lowe_case"
+                android:layout_gravity="center"
+                android:textColor="@color/icon_work_default_color"
+                />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:contentDescription="@string/icon"
+            android:src="@drawable/ic_baseline_arrow_forward_36" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/icon"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/ivCompleted1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/icon"
+                android:src="@drawable/ic_baseline_handyman_48_default" />
+            <TextView
+                android:id="@+id/tvCompleted1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/completed_in_lower_case"
+                android:layout_gravity="center"
+                android:textColor="@color/icon_work_default_color" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
