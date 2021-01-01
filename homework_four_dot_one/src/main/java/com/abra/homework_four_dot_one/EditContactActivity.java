@@ -29,6 +29,10 @@ public class EditContactActivity extends AppCompatActivity {
         info = findViewById(R.id.editTextInfo1);
         btRemove = findViewById(R.id.buttonRemove);
         imageButtonBack = findViewById(R.id.imgButtonBack);
+        getData();
+    }
+
+    private void getData() {
         Intent intent = getIntent();
         if (intent != null) {
             int position = intent.getIntExtra("position", 0);
@@ -47,7 +51,6 @@ public class EditContactActivity extends AppCompatActivity {
             name.setText(contactItem.getName());
             info.setText(contactItem.getInfo());
         }
-
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -58,15 +61,16 @@ public class EditContactActivity extends AppCompatActivity {
             String textName = name.getText().toString();
             String textInfo = info.getText().toString();
             if (!textName.equals("") && !textInfo.equals("")) {
-                showActivity(new ContactItem(iconId, textName, textInfo, typeInfo),position,false);
+                showActivity(new ContactItem(iconId, textName, textInfo, typeInfo), position, false);
             } else {
                 Toast.makeText(this, "Fields can't be empty!", Toast.LENGTH_SHORT).show();
             }
         });
         btRemove.setOnClickListener(view -> {
-            showActivity(null,position,true);
+            showActivity(null, position, true);
         });
     }
+
     private void showActivity(ContactItem contactItem, int position, boolean isRemoved) {
         Intent intent = new Intent();
         if (!isRemoved) intent.putExtra("contactItem", contactItem);

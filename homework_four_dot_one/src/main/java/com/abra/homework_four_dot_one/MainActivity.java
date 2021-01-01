@@ -37,6 +37,28 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.floatingActionButton);
         recyclerView = findViewById(R.id.recyclerView);
         searchView = findViewById(R.id.searchView);
+        setRecyclerViewSettings(savedInstanceState);
+        setSearchViewSettings();
+        setFabListener();
+    }
+
+    private void setSearchViewSettings() {
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                contactItemAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+    }
+
+    private void setRecyclerViewSettings(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             contactItemAdapter = new ContactItemAdapter(savedInstanceState.getParcelableArrayList("list"));
         } else {
@@ -56,24 +78,13 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("contactItem", contactItem);
             startActivityForResult(intent, ACTIVITY_EDIT);
         }));
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+    }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                contactItemAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
+    private void setFabListener() {
         button.setOnClickListener(view -> {
             Intent intent = new Intent(this, AddContactActivity.class);
             startActivityForResult(intent, ACTIVITY_ADD);
         });
-
     }
 
     @Override
