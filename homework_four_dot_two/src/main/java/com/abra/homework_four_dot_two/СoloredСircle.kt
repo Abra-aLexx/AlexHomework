@@ -30,7 +30,7 @@ class ColoredCircle : View {
      */
     private val regionsArray: Array<Region> = arrayOf(Region(), Region(), Region(), Region())
     private var smallCircleRegion = Region()
-    private var listener : OnClickShowTouchCoordinatesListener? = null
+    lateinit var showCoordinatesListener: (x: Int, y: Int, view: View, color: Int) -> Unit
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -51,8 +51,8 @@ class ColoredCircle : View {
     }
 
     private fun setPainters() {
-        for (i in arrayPaints.indices) {
-            arrayPaints[i].color = colors[i]
+        arrayPaints.forEach {
+            it.color = colors[arrayPaints.indexOf(it)]
         }
     }
 
@@ -64,12 +64,12 @@ class ColoredCircle : View {
         regionsArray[3] = Region(centerX.toInt(), (centerY - radiusBig).toInt(), (centerX + radiusBig).toInt(), centerY.toInt())
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        canvas?.drawArc(rectF, 0F, 90F, true, arrayPaints[0])
-        canvas?.drawArc(rectF, 90F, 90F, true, arrayPaints[1])
-        canvas?.drawArc(rectF, 180F, 90F, true, arrayPaints[2])
-        canvas?.drawArc(rectF, 270F, 90F, true, arrayPaints[3])
-        canvas?.drawCircle(centerX, centerY, radiusSmall, paintSmall)
+    override fun onDraw(canvas: Canvas) {
+        canvas.drawArc(rectF, 0F, 90F, true, arrayPaints[0])
+        canvas.drawArc(rectF, 90F, 90F, true, arrayPaints[1])
+        canvas.drawArc(rectF, 180F, 90F, true, arrayPaints[2])
+        canvas.drawArc(rectF, 270F, 90F, true, arrayPaints[3])
+        canvas.drawCircle(centerX, centerY, radiusSmall, paintSmall)
         super.onDraw(canvas)
     }
 
@@ -84,14 +84,14 @@ class ColoredCircle : View {
                     for (i in 1..4) {
                         colors.add(allColors.random())
                     }
-                    listener?.onClickShowTouchCoordinates(x.toInt(), y.toInt(),this, colors.random())
+                    showCoordinatesListener(x.toInt(), y.toInt(),this, colors.random())
                     setPainters()
                     invalidate()
                 } else {
                     for (i in regionsArray.indices) {
                         if (regionsArray[i].contains(x.toInt(), y.toInt())!!) {
                             colors[i] = allColors.random()
-                            listener?.onClickShowTouchCoordinates(x.toInt(), y.toInt(),this, colors[i])
+                            showCoordinatesListener(x.toInt(), y.toInt(),this, colors[i])
                             setPainters()
                             invalidate()
                         }
@@ -100,11 +100,5 @@ class ColoredCircle : View {
             }
         }
         return super.onTouchEvent(event)
-    }
-    interface OnClickShowTouchCoordinatesListener{
-        fun onClickShowTouchCoordinates(x: Int, y: Int, view: View, color: Int)
-    }
-    fun setOnClickShowTouchCoordinatesListener(listener: OnClickShowTouchCoordinatesListener){
-        this.listener = listener
     }
 }

@@ -7,24 +7,20 @@ import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.snackbar.Snackbar
 
-class MainActivity : AppCompatActivity(), ColoredCircle.OnClickShowTouchCoordinatesListener{
-    private var flag = false
+class MainActivity : AppCompatActivity(){
+    private lateinit var switch: SwitchCompat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val coloredCircle = findViewById<ColoredCircle>(R.id.coloredCircle)
-        val switch = findViewById<SwitchCompat>(R.id.switch1)
-        coloredCircle.setOnClickShowTouchCoordinatesListener(this)
-        switch.setOnCheckedChangeListener { view, isCheked ->
-            flag = isCheked
+        switch = findViewById(R.id.switch1)
+        coloredCircle.showCoordinatesListener = {x: Int, y: Int, view: View, color: Int ->
+            if(isSnackbarEnable()){
+                Snackbar.make(view,"Нажаты координаты $x, $y",Snackbar.LENGTH_SHORT).setTextColor(color).show()
+            }else {
+                Toast.makeText(this, "Нажаты координаты $x, $y", Toast.LENGTH_SHORT).show()
+            }
         }
     }
-
-    override fun onClickShowTouchCoordinates(x: Int, y: Int, view: View, color: Int) {
-        if(flag){
-            Snackbar.make(view,"Нажаты координаты $x, $y",Snackbar.LENGTH_SHORT).setTextColor(color).show()
-        }else {
-            Toast.makeText(this, "Нажаты координаты $x, $y", Toast.LENGTH_SHORT).show()
-        }
-    }
+    private fun isSnackbarEnable() = switch.isChecked
 }
