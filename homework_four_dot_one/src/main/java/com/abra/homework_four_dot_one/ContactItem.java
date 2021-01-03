@@ -1,16 +1,19 @@
 package com.abra.homework_four_dot_one;
 
-public class ContactItem {
-    private int iconId;
-    private String name;
-    private String info;
-    private int iconBackground;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    public ContactItem(int iconId, String name, String info, int iconBackground) {
+public class ContactItem implements Parcelable {
+    private final int iconId;
+    private final String name;
+    private final String info;
+    private final String typeInfo;
+
+    public ContactItem(int iconId, String name, String info, String typeInfo) {
         this.iconId = iconId;
         this.name = name;
         this.info = info;
-        this.iconBackground = iconBackground;
+        this.typeInfo = typeInfo;
     }
 
     public int getIconId() {
@@ -25,7 +28,39 @@ public class ContactItem {
         return info;
     }
 
-    public int getIconBackground() {
-        return iconBackground;
+    public String getTypeInfo() {
+        return typeInfo;
+    }
+
+    public static final Creator<ContactItem> CREATOR = new Creator<ContactItem>() {
+        @Override
+        public ContactItem createFromParcel(Parcel parcel) {
+            return new ContactItem(parcel);
+        }
+
+        @Override
+        public ContactItem[] newArray(int i) {
+            return new ContactItem[i];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(iconId);
+        parcel.writeString(name);
+        parcel.writeString(info);
+        parcel.writeString(typeInfo);
+    }
+
+    private ContactItem(Parcel parcel) {
+        iconId = parcel.readInt();
+        name = parcel.readString();
+        info = parcel.readString();
+        typeInfo = parcel.readString();
     }
 }

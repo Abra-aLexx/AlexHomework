@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -29,7 +30,6 @@ public class AddContactActivity extends AppCompatActivity {
         info = findViewById(R.id.editTextInfo);
         group = findViewById(R.id.radioGroup);
         setListeners();
-
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -51,33 +51,38 @@ public class AddContactActivity extends AppCompatActivity {
             }
         });
         imgBack.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            showActivity(null, true);
         });
         imgAdd.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            ContactItemAdapter contactItemAdapter = ContactItemAdapter.getContactItemAdapter();
-            int iconId = 0, iconBackground = 0;
+            int iconId = 0;
+            String typeInfo = null;
             switch (group.getCheckedRadioButtonId()) {
                 case R.id.radioButtonPhone: {
                     iconId = R.drawable.icon_contact;
-                    iconBackground = R.drawable.shape2;
+                    typeInfo = "phone";
                     break;
                 }
                 case R.id.radioButtonEmail: {
                     iconId = R.drawable.icon_email;
-                    iconBackground = R.drawable.shape1;
+                    typeInfo = "email";
                     break;
                 }
             }
             String textName = name.getText().toString();
             String textInfo = info.getText().toString();
             if (!textName.equals("") && !textInfo.equals("")) {
-                contactItemAdapter.add(new ContactItem(iconId, textName, textInfo, iconBackground));
-                startActivity(intent);
+                showActivity(new ContactItem(iconId, textName, textInfo, typeInfo), false);
             } else {
                 Toast.makeText(this, "Fields can't be empty!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showActivity(ContactItem contactItem, boolean flag) {
+        Intent intent = new Intent();
+        if (!flag) intent.putExtra("contactItem", contactItem);
+        intent.putExtra("flag", flag);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 }
