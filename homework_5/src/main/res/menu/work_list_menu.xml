@@ -12,4 +12,6 @@
         android:title="@string/in_pending"/>
     <item android:id="@+id/itemCompleted"
         android:title="@string/completed"/>
+    <item android:id="@+id/itemAll"
+        android:title="@string/all"/>
 </menu>

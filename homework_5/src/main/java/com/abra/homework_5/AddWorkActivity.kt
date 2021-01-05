@@ -24,7 +24,7 @@ class AddWorkActivity : AppCompatActivity() {
     private lateinit var tvPending: TextView
     private lateinit var tvInProgress: TextView
     private lateinit var tvCompleted: TextView
-    private var checkedStatus = "pending"
+    private lateinit var checkedStatus: String
     private lateinit var date: String
     private var currentCarId: Long = 0
     private val RESULT_CODE_BUTTON_BACK = 6
@@ -55,6 +55,7 @@ class AddWorkActivity : AppCompatActivity() {
         }
         setSupportActionBar(toolbar)
         setImageListeners()
+        checkedStatus = resources.getString(R.string.pending)
         setButtonsListeners()
         val simpleDateFormat = SimpleDateFormat.getDateInstance()
         date = simpleDateFormat.format(Date())
@@ -66,7 +67,7 @@ class AddWorkActivity : AppCompatActivity() {
             ivPending.setImageResource(R.drawable.ic_baseline_handyman_48_pending)
             ivInProgress.setImageResource(R.drawable.ic_baseline_handyman_48_default)
             ivCompleted.setImageResource(R.drawable.ic_baseline_handyman_48_default)
-            checkedStatus = "pending"
+            checkedStatus = resources.getString(R.string.pending)
             tvPending.setTextColor(resources.getColor(R.color.work_status_pending))
             tvInProgress.setTextColor(resources.getColor(R.color.icon_work_default_color))
             tvCompleted.setTextColor(resources.getColor(R.color.icon_work_default_color))
@@ -75,7 +76,7 @@ class AddWorkActivity : AppCompatActivity() {
             ivPending.setImageResource(R.drawable.ic_baseline_handyman_48_default)
             ivInProgress.setImageResource(R.drawable.ic_baseline_handyman_48_in_progress)
             ivCompleted.setImageResource(R.drawable.ic_baseline_handyman_48_default)
-            checkedStatus = "in progress"
+            checkedStatus = resources.getString(R.string.in_progress_lowe_case)
             tvPending.setTextColor(resources.getColor(R.color.icon_work_default_color))
             tvInProgress.setTextColor(resources.getColor(R.color.work_status_in_progress))
             tvCompleted.setTextColor(resources.getColor(R.color.icon_work_default_color))
@@ -84,7 +85,7 @@ class AddWorkActivity : AppCompatActivity() {
             ivPending.setImageResource(R.drawable.ic_baseline_handyman_48_default)
             ivInProgress.setImageResource(R.drawable.ic_baseline_handyman_48_default)
             ivCompleted.setImageResource(R.drawable.ic_baseline_handyman_48_completed)
-            checkedStatus = "completed"
+            checkedStatus = resources.getString(R.string.completed_in_lower_case)
             tvPending.setTextColor(resources.getColor(R.color.icon_work_default_color))
             tvInProgress.setTextColor(resources.getColor(R.color.icon_work_default_color))
             tvCompleted.setTextColor(resources.getColor(R.color.work_status_completed))

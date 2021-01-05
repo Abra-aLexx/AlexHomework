@@ -76,20 +76,20 @@ class EditWorkActivity : AppCompatActivity() {
 
     private fun setIconStatus(status: String?) {
         when (status) {
-            "pending" -> {
+            resources.getString(R.string.pending) -> {
                 ivPending.setImageResource(R.drawable.ic_baseline_handyman_48_pending)
                 tvPending.setTextColor(resources.getColor(R.color.work_status_pending))
-                checkedStatus = "pending"
+                checkedStatus = resources.getString(R.string.pending)
             }
-            "in progress" -> {
+            resources.getString(R.string.in_progress_lowe_case) -> {
                 ivInProgress.setImageResource(R.drawable.ic_baseline_handyman_48_in_progress)
                 tvInProgress.setTextColor(resources.getColor(R.color.work_status_in_progress))
-                checkedStatus = "in progress"
+                checkedStatus = resources.getString(R.string.in_progress_lowe_case)
             }
-            "completed" -> {
+            resources.getString(R.string.completed_in_lower_case) -> {
                 ivCompleted.setImageResource(R.drawable.ic_baseline_handyman_48_completed)
                 tvCompleted.setTextColor(resources.getColor(R.color.work_status_completed))
-                checkedStatus = "completed"
+                checkedStatus = resources.getString(R.string.completed_in_lower_case)
             }
         }
     }
@@ -99,7 +99,7 @@ class EditWorkActivity : AppCompatActivity() {
             ivPending.setImageResource(R.drawable.ic_baseline_handyman_48_pending)
             ivInProgress.setImageResource(R.drawable.ic_baseline_handyman_48_default)
             ivCompleted.setImageResource(R.drawable.ic_baseline_handyman_48_default)
-            checkedStatus = "pending"
+            checkedStatus = resources.getString(R.string.pending)
             tvPending.setTextColor(resources.getColor(R.color.work_status_pending))
             tvInProgress.setTextColor(resources.getColor(R.color.icon_work_default_color))
             tvCompleted.setTextColor(resources.getColor(R.color.icon_work_default_color))
@@ -108,7 +108,7 @@ class EditWorkActivity : AppCompatActivity() {
             ivPending.setImageResource(R.drawable.ic_baseline_handyman_48_default)
             ivInProgress.setImageResource(R.drawable.ic_baseline_handyman_48_in_progress)
             ivCompleted.setImageResource(R.drawable.ic_baseline_handyman_48_default)
-            checkedStatus = "in progress"
+            checkedStatus = resources.getString(R.string.in_progress_lowe_case)
             tvPending.setTextColor(resources.getColor(R.color.icon_work_default_color))
             tvInProgress.setTextColor(resources.getColor(R.color.work_status_in_progress))
             tvCompleted.setTextColor(resources.getColor(R.color.icon_work_default_color))
@@ -117,7 +117,7 @@ class EditWorkActivity : AppCompatActivity() {
             ivPending.setImageResource(R.drawable.ic_baseline_handyman_48_default)
             ivInProgress.setImageResource(R.drawable.ic_baseline_handyman_48_default)
             ivCompleted.setImageResource(R.drawable.ic_baseline_handyman_48_completed)
-            checkedStatus = "completed"
+            checkedStatus = resources.getString(R.string.completed_in_lower_case)
             tvPending.setTextColor(resources.getColor(R.color.icon_work_default_color))
             tvInProgress.setTextColor(resources.getColor(R.color.icon_work_default_color))
             tvCompleted.setTextColor(resources.getColor(R.color.work_status_completed))

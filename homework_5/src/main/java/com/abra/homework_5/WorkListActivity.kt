@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.widget.SearchView
@@ -30,6 +31,8 @@ class WorkListActivity : AppCompatActivity(), WorkInfoAdapter.OnWorkInfoItemClic
     private val RESULT_CODE_BUTTON_BACK = 6
     private var currentCarId: Long = 0
     private lateinit var currentCar: CarInfo
+    private lateinit var searchView: SearchView
+    private var searchWasUsed: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,11 +80,12 @@ class WorkListActivity : AppCompatActivity(), WorkInfoAdapter.OnWorkInfoItemClic
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.work_list_menu, menu)
-        val searchView = menu?.findItem(R.id.searchWorkList)?.actionView as SearchView
+        searchView = menu?.findItem(R.id.searchWorkList)?.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?) = false
 
             override fun onQueryTextChange(p0: String?): Boolean {
+                searchWasUsed = true
                 adapter.filter.filter(p0)
                 return false
             }
@@ -89,16 +93,34 @@ class WorkListActivity : AppCompatActivity(), WorkInfoAdapter.OnWorkInfoItemClic
         return true
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return super.onOptionsItemSelected(item)
-//    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.itemInProgress ->{
+                adapter.showByOrder(resources.getString(R.string.in_progress_lowe_case))
+            }
+            R.id.itemInPending ->{
+                adapter.showByOrder(resources.getString(R.string.pending))
+            }
+            R.id.itemCompleted ->{
+                adapter.showByOrder(resources.getString(R.string.completed_in_lower_case))
+            }
+            R.id.itemAll ->{
+                adapter.showByOrder("all")
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
             if (resultCode != RESULT_CODE_BUTTON_BACK) {
                 adapter.updateLists(workInfoDAO.getAllWorksForCar(currentCarId))
-                if (adapter.itemCount != 0) noWorksAddedText.visibility = View.INVISIBLE
+                if (searchWasUsed){
+                    searchView.onActionViewCollapsed()
+                    searchWasUsed = false
+                }
             }
+        if (adapter.itemCount != 0) noWorksAddedText.visibility = View.INVISIBLE
     }
 
     override fun onWorkInfoItemClick(workInfo: WorkInfo, position: Int) {

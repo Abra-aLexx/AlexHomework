@@ -62,18 +62,6 @@ class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(
         }
     }
 
-    fun add(carInfo: CarInfo) {
-        carInfoList.add(carInfo)
-        carInfoListForFilter.add(carInfo)
-        notifyItemChanged(carInfoList.indexOf(carInfo))
-    }
-
-    fun edit(carInfo: CarInfo, position: Int) {
-        carInfoList[position] = carInfo
-        carInfoListForFilter[position] = carInfo
-        notifyItemChanged(position)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarInfoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.car_info_item, parent, false)
         return CarInfoViewHolder(view, context, onEditIconClickListener, onCarInfoClickListener)
@@ -108,7 +96,7 @@ class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(
             }else{
                 val filterPattern = p0.toString().toLowerCase().trim()
                 carInfoListForFilter.forEach {
-                    if (it.name?.toLowerCase()?.contains(filterPattern)!!||it.model?.toLowerCase()?.contains(filterPattern)!!) {
+                    if (it.name.toLowerCase().contains(filterPattern)||it.model.toLowerCase().contains(filterPattern)) {
                         filteredList.add(it)
                     }
                 }
@@ -126,7 +114,7 @@ class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(
 
     }
     override fun getFilter() = filter
-    private fun selector(p: CarInfo): String = p.name
+    private fun selector(p: CarInfo): String = p.producer.toLowerCase()
 
     fun sortByCarName(list: List<CarInfo>) {
         carInfoList = ArrayList(list as ArrayList<CarInfo>)

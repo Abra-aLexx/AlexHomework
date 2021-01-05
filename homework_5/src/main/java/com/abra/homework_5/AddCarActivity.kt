@@ -80,8 +80,6 @@ class AddCarActivity : AppCompatActivity() {
             if (name.isNotEmpty() && producer.isNotEmpty() && model.isNotEmpty()) {
                 val carInfo = CarInfo(pathToPicture, name, producer, model)
                 carInfoDAO.add(carInfo)
-                intent.putExtra("position", carInfo.id)
-                //intent.putExtra("carInfo", CarInfo(pathToPicture, textName.text.toString(), textProducer.text.toString(), textModel.text.toString()))
                 setResult(Activity.RESULT_OK,intent)
                 finish()
             } else {
