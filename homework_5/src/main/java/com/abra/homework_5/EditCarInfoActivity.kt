@@ -15,7 +15,9 @@ import java.io.File
 import java.io.FileOutputStream
 
 class EditCarInfoActivity : AppCompatActivity() {
+    private var carId: Long? = 0
     private val REQUEST_CODE_PHOTO = 1
+    private val RESULT_CODE_BUTTON_BACK = 5
     private lateinit var textName: EditText
     private lateinit var textProducer: EditText
     private lateinit var textModel: EditText
@@ -26,9 +28,10 @@ class EditCarInfoActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private var photoWasLoaded: Boolean = false
     private lateinit var pathToPicture: String
-    private var position: Int = -1
     private lateinit var carPictureDirectory: File
     private lateinit var currentCarInfo: CarInfo
+    private lateinit var database: DataBaseCarInfo
+    private lateinit var carInfoDAO: CarInfoDAO
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_car_info)
@@ -40,17 +43,20 @@ class EditCarInfoActivity : AppCompatActivity() {
         imgButtonBack = findViewById(R.id.imgButtonBack1)
         imgButtonApply = findViewById(R.id.imgButtonApply1)
         fab = findViewById(R.id.fabLoadPhoto1)
+        database = DataBaseCarInfo.getDataBase(applicationContext)
+        carInfoDAO = database.getCarInfoDAO()
         createDirectory()
         setSupportActionBar(toolbar)
         setListeners()
         loadDataFromIntent()
     }
-    private fun loadDataFromIntent(){
+
+    private fun loadDataFromIntent() {
         val carInfo = intent.getParcelableExtra<CarInfo>("carInfo")
         if (carInfo != null) {
             currentCarInfo = carInfo
         }
-        position = intent.getIntExtra("position", -1)
+        carId = carInfo?.id
         if (carInfo != null) {
             val path = carInfo.pathToPicture
             val file = File(path)
@@ -70,6 +76,7 @@ class EditCarInfoActivity : AppCompatActivity() {
             textModel.setText(carInfo.model)
         }
     }
+
     fun setListeners() {
         imgButtonBack.setOnClickListener {
             showActivity(true)
@@ -87,47 +94,47 @@ class EditCarInfoActivity : AppCompatActivity() {
         val intent = Intent()
         if (!isButtonBack) {
             val name = textName.text.toString()
-            val producer = textName.text.toString()
+            val producer = textProducer.text.toString()
             val model = textModel.text.toString()
             if (name.isNotEmpty() && producer.isNotEmpty() && model.isNotEmpty()) {
                 if (!photoWasLoaded) {
                     pathToPicture = ""
                 }
-                // странно, что работает только при создании нового ключа Long, а с carInfo.id не хочет
-                intent.putExtra("carInfo", CarInfo(currentCarInfo.id, pathToPicture, name, producer, model))
-                intent.putExtra("isButtonBack", isButtonBack)
-                intent.putExtra("position", position)
-                setResult(Activity.RESULT_OK,intent)
+                val carInfo = CarInfo(pathToPicture, name, producer, model).also { it.id = carId }
+                carInfoDAO.update(carInfo)
+                setResult(Activity.RESULT_OK, intent)
                 finish()
             } else {
                 Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
             }
         } else {
-            intent.putExtra("isButtonBack", isButtonBack)
-            setResult(Activity.RESULT_OK,intent)
+            setResult(RESULT_CODE_BUTTON_BACK, intent)
             finish()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val photo = data!!.extras!!.get("data") as Bitmap?
-        val path = "photo_${System.currentTimeMillis()}.jpg"
-        if (photo != null) {
-            pathToPicture = "${carPictureDirectory.path}/${path}"
-            if (!carPictureDirectory.exists()) {
-                createDirectory()
+        if (data != null) {
+            if (data.extras?.get("data") != null) {
+                val photo = data.extras!!.get("data") as Bitmap?
+                val path = "photo_${System.currentTimeMillis()}.jpg"
+                if (photo != null) {
+                    pathToPicture = "${carPictureDirectory.path}/${path}"
+                    if (!carPictureDirectory.exists()) {
+                        createDirectory()
+                    }
+                    val file = File(carPictureDirectory, path)
+                    file.createNewFile()
+                    val stream = FileOutputStream(file)
+                    photo.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                    carPhoto.setImageBitmap(photo)
+                    photoWasLoaded = true
+                    stream.flush()
+                    stream.close()
+                }
             }
-            val file = File(carPictureDirectory, path)
-            file.createNewFile()
-            val stream = FileOutputStream(file)
-            photo.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            carPhoto.setImageBitmap(photo)
-            photoWasLoaded = true
-            stream.flush()
-            stream.close()
         }
-
     }
 
     private fun createDirectory() {

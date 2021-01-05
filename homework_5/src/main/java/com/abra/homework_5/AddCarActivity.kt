@@ -8,7 +8,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
@@ -16,6 +20,7 @@ import java.io.FileOutputStream
 
 class AddCarActivity : AppCompatActivity() {
     private val REQUEST_CODE_PHOTO = 1
+    private val RESULT_CODE_BUTTON_BACK = 5
     private lateinit var textName: EditText
     private lateinit var textProducer: EditText
     private lateinit var textModel: EditText
@@ -28,6 +33,8 @@ class AddCarActivity : AppCompatActivity() {
     private var photoWasLoaded: Boolean = false
     private lateinit var carPictureDirectory: File
     private lateinit var pathToPicture: String
+    private lateinit var dataBase: DataBaseCarInfo
+    private lateinit var carInfoDAO: CarInfoDAO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +48,8 @@ class AddCarActivity : AppCompatActivity() {
         imgButtonApply = findViewById(R.id.imgButtonApply)
         fab = findViewById(R.id.fabLoadPhoto)
         noCarPhoto = findViewById(R.id.tvNoPhoto)
+        dataBase = DataBaseCarInfo.getDataBase(applicationContext)
+        carInfoDAO = dataBase.getCarInfoDAO()
         createDirectory()
         setSupportActionBar(toolbar)
         setListeners()
@@ -66,41 +75,46 @@ class AddCarActivity : AppCompatActivity() {
                 pathToPicture = ""
             }
             val name = textName.text.toString()
-            val producer = textName.text.toString()
+            val producer = textProducer.text.toString()
             val model = textModel.text.toString()
             if (name.isNotEmpty() && producer.isNotEmpty() && model.isNotEmpty()) {
-                intent.putExtra("carInfo", CarInfo(0,pathToPicture, textName.text.toString(), textProducer.text.toString(), textModel.text.toString()))
-                intent.putExtra("isButtonBack", isButtonBack)
+                val carInfo = CarInfo(pathToPicture, name, producer, model)
+                carInfoDAO.add(carInfo)
+                intent.putExtra("position", carInfo.id)
+                //intent.putExtra("carInfo", CarInfo(pathToPicture, textName.text.toString(), textProducer.text.toString(), textModel.text.toString()))
                 setResult(Activity.RESULT_OK,intent)
                 finish()
             } else {
                 Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
             }
         } else {
-            intent.putExtra("isButtonBack", isButtonBack)
-            setResult(Activity.RESULT_OK,intent)
+            setResult(RESULT_CODE_BUTTON_BACK,intent)
             finish()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val photo = data!!.extras!!.get("data") as Bitmap?
-        val path = "photo_${System.currentTimeMillis()}.jpg"
-        if (photo != null) {
-            pathToPicture = "${carPictureDirectory.path}/${path}"
-            if (!carPictureDirectory.exists()) {
-                createDirectory()
+        if (data!=null) {
+            if(data.extras?.get("data") !=null) {
+                val photo = data.extras!!.get("data") as Bitmap?
+                val path = "photo_${System.currentTimeMillis()}.jpg"
+                if (photo != null) {
+                    pathToPicture = "${carPictureDirectory.path}/${path}"
+                    if (!carPictureDirectory.exists()) {
+                        createDirectory()
+                    }
+                    val file = File(carPictureDirectory, path)
+                    file.createNewFile()
+                    val stream = FileOutputStream(file)
+                    photo.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                    carPhoto.setImageBitmap(photo)
+                    noCarPhoto.visibility = View.INVISIBLE
+                    photoWasLoaded = true
+                    stream.flush()
+                    stream.close()
+                }
             }
-            val file = File(carPictureDirectory, path)
-            file.createNewFile()
-            val stream = FileOutputStream(file)
-            photo.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            carPhoto.setImageBitmap(photo)
-            noCarPhoto.visibility = View.INVISIBLE
-            photoWasLoaded = true
-            stream.flush()
-            stream.close()
         }
     }
 

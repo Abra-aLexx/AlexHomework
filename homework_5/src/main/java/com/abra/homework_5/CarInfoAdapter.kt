@@ -1,29 +1,31 @@
 package com.abra.homework_5
 
 import android.app.Activity
-import android.content.Context
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import java.io.File
 
-class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>() {
+class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(), Filterable {
     constructor(c: Activity):this(){
         context = c
         carInfoList = arrayListOf()
+        carInfoListForFilter = arrayListOf()
     }
     constructor(c: Activity, savedInfo: List<CarInfo>):this(){
         context = c
         carInfoList = savedInfo as ArrayList<CarInfo>
+        carInfoListForFilter = ArrayList(carInfoList)
     }
 
     private lateinit var context: Activity
     private lateinit var carInfoList : ArrayList<CarInfo>
+    private lateinit var carInfoListForFilter : ArrayList<CarInfo>
     private lateinit var onEditIconClickListener: OnEditIconClickListener
     private lateinit var onCarInfoClickListener: OnCarInfoClickListener
 
@@ -52,21 +54,23 @@ class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(
             textProducer.text = carInfo.producer
             textModel.text = carInfo.model
             editImage.setOnClickListener {
-                listener.onEditIconClick(carInfo, adapterPosition)
+                listener.onEditIconClick(carInfo)
             }
             itemView.setOnClickListener {
-                listenerCommon.onCarInfoClick(carInfo,adapterPosition)
+                listenerCommon.onCarInfoClick(carInfo)
             }
         }
     }
 
     fun add(carInfo: CarInfo) {
         carInfoList.add(carInfo)
+        carInfoListForFilter.add(carInfo)
         notifyItemChanged(carInfoList.indexOf(carInfo))
     }
 
     fun edit(carInfo: CarInfo, position: Int) {
         carInfoList[position] = carInfo
+        carInfoListForFilter[position] = carInfo
         notifyItemChanged(position)
     }
 
@@ -82,7 +86,7 @@ class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(
     override fun getItemCount() = carInfoList.size
 
     interface OnEditIconClickListener {
-        fun onEditIconClick(carInfo: CarInfo, position: Int)
+        fun onEditIconClick(carInfo: CarInfo)
     }
 
     fun setOnEditIconClickListener(listener: OnEditIconClickListener) {
@@ -90,10 +94,45 @@ class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(
     }
 
     interface OnCarInfoClickListener {
-        fun onCarInfoClick(carInfo: CarInfo, position: Int)
+        fun onCarInfoClick(carInfo: CarInfo)
     }
 
     fun setOnCarInfoClickListener(listener: OnCarInfoClickListener) {
         onCarInfoClickListener = listener
+    }
+    private val filter: Filter = object: Filter(){
+        override fun performFiltering(p0: CharSequence?): FilterResults {
+            val filteredList = arrayListOf<CarInfo>()
+            if (p0 == null || p0.isEmpty()) {
+                filteredList.addAll(carInfoListForFilter)
+            }else{
+                val filterPattern = p0.toString().toLowerCase().trim()
+                carInfoListForFilter.forEach {
+                    if (it.name?.toLowerCase()?.contains(filterPattern)!!||it.model?.toLowerCase()?.contains(filterPattern)!!) {
+                        filteredList.add(it)
+                    }
+                }
+            }
+            val results = FilterResults()
+            results.values = filteredList
+            return results
+        }
+
+        override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+            carInfoList.clear()
+            carInfoList.addAll(p1?.values as ArrayList<CarInfo>);
+            notifyDataSetChanged()
+        }
+
+    }
+    override fun getFilter() = filter
+    private fun selector(p: CarInfo): String = p.name
+
+    fun sortByCarName(list: List<CarInfo>) {
+        carInfoList = ArrayList(list as ArrayList<CarInfo>)
+        carInfoListForFilter = ArrayList(list)
+        carInfoList.sortBy { selector(it) }
+        carInfoListForFilter.sortBy { selector(it) }
+        notifyDataSetChanged()
     }
 }

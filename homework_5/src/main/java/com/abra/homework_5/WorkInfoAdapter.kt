@@ -5,22 +5,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.util.zip.Inflater
 
-class WorkInfoAdapter() : RecyclerView.Adapter<WorkInfoAdapter.WorkInfoViewHolder>() {
+class WorkInfoAdapter() : RecyclerView.Adapter<WorkInfoAdapter.WorkInfoViewHolder>(), Filterable {
     constructor(c: Activity):this(){
         context = c
         workInfoList = arrayListOf()
+        workInfoListForFilter = arrayListOf()
     }
     constructor(c: Activity, savedInfo: List<WorkInfo>):this(){
         context = c
         workInfoList = savedInfo as ArrayList<WorkInfo>
+        workInfoListForFilter = ArrayList(workInfoList)
     }
     private lateinit var context: Activity
     private lateinit var workInfoList: ArrayList<WorkInfo>
+    private lateinit var workInfoListForFilter: ArrayList<WorkInfo>
     private lateinit var listener: OnWorkInfoItemClickListener
 
     class WorkInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -62,14 +67,17 @@ class WorkInfoAdapter() : RecyclerView.Adapter<WorkInfoAdapter.WorkInfoViewHolde
 
     fun add(workInfo: WorkInfo) {
         workInfoList.add(workInfo)
+        workInfoListForFilter.add(workInfo)
         notifyItemChanged(workInfoList.indexOf(workInfoList))
     }
     fun edit(workInfo: WorkInfo, position: Int) {
         workInfoList[position] = workInfo
+        workInfoListForFilter[position] = workInfo
         notifyItemChanged(position)
     }
     fun remove(position: Int) {
         workInfoList.removeAt(position)
+        workInfoListForFilter.removeAt(position)
         notifyItemRemoved(position)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkInfoViewHolder {
@@ -88,5 +96,34 @@ class WorkInfoAdapter() : RecyclerView.Adapter<WorkInfoAdapter.WorkInfoViewHolde
     }
     fun setOnWorkInfoItemClickListener(listener: OnWorkInfoItemClickListener){
         this.listener = listener
+    }
+    private val filter: Filter = object: Filter() {
+        override fun performFiltering(p0: CharSequence?): FilterResults {
+            val filteredList = arrayListOf<WorkInfo>()
+            if (p0 == null || p0.isEmpty()) {
+                filteredList.addAll(workInfoListForFilter)
+            } else {
+                val filterPattern = p0.toString().toLowerCase().trim()
+                workInfoListForFilter.forEach {
+                    if (it.workName?.toLowerCase()?.contains(filterPattern)!!) {
+                        filteredList.add(it)
+                    }
+                }
+            }
+            val results = FilterResults()
+            results.values = filteredList
+            return results
+        }
+        override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+            workInfoList.clear()
+            workInfoList.addAll(p1?.values as ArrayList<WorkInfo>);
+            notifyDataSetChanged()
+        }
+    }
+        override fun getFilter() = filter
+    fun updateLists(list: List<WorkInfo>){
+        workInfoList = ArrayList(list as ArrayList<WorkInfo>)
+        workInfoListForFilter = ArrayList(list)
+        notifyDataSetChanged()
     }
 }

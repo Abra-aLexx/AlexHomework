@@ -5,9 +5,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
+import android.view.View
 import android.widget.ImageButton
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,10 +22,14 @@ class WorkListActivity : AppCompatActivity(), WorkInfoAdapter.OnWorkInfoItemClic
     private lateinit var adapter: WorkInfoAdapter
     private lateinit var database: DataBaseCarInfo
     private lateinit var workInfoDAO: WorkInfoDAO
+    private lateinit var textCarName: TextView
+    private lateinit var textCarModel: TextView
+    private lateinit var noWorksAddedText: TextView
     private val ADD_WORK_ACTIVITY_CODE = 3
     private val EDIT_WORK_ACTIVITY_CODE = 4
-    private lateinit var currentCarInfo: CarInfo
-    private var lastUsedId: Int = 0
+    private val RESULT_CODE_BUTTON_BACK = 6
+    private var currentCarId: Long = 0
+    private lateinit var currentCar: CarInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +38,20 @@ class WorkListActivity : AppCompatActivity(), WorkInfoAdapter.OnWorkInfoItemClic
         fab = findViewById(R.id.fabAddWork)
         imgButtonBack = findViewById(R.id.imgButtonBack2)
         recyclerView = findViewById(R.id.recyclerViewWorkList)
-        database = DataBaseCarInfo.getDataBase(this)
+        textCarName = findViewById(R.id.tvWorkListCarName)
+        textCarModel = findViewById(R.id.tvWorkListCarModel)
+        noWorksAddedText = findViewById(R.id.tvNoWorksAdded)
+        database = DataBaseCarInfo.getDataBase(applicationContext)
         workInfoDAO = database.getWorkInfoDAO()
-        if (intent!=null){
-            currentCarInfo = intent.getParcelableExtra("carInfo")!!
+        if (intent != null) {
+            currentCar = intent.getParcelableExtra("carInfo")!!
+            currentCarId = currentCar.id!!
+            textCarName.text = currentCar.name
+            textCarModel.text = currentCar.model
         }
-        adapter = if (workInfoDAO.getAllWorksForCar(currentCarInfo.id).isNotEmpty()){
-            WorkInfoAdapter(this, workInfoDAO.getAllWorksForCar(currentCarInfo.id))
-        }else {
+        adapter = if (workInfoDAO.getAllWorksForCar(currentCarId).isNotEmpty()) {
+            WorkInfoAdapter(this, workInfoDAO.getAllWorksForCar(currentCarId))
+        } else {
             WorkInfoAdapter(this)
         }
         adapter.setOnWorkInfoItemClickListener(this)
@@ -48,79 +59,51 @@ class WorkListActivity : AppCompatActivity(), WorkInfoAdapter.OnWorkInfoItemClic
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         setSupportActionBar(toolbar)
         setButtonListeners()
-        val sharedPreferences = getSharedPreferences("lastUsedId", MODE_PRIVATE)
-        if (sharedPreferences.getInt("lastId", 0) != 0){
-                lastUsedId = sharedPreferences.getInt("lastId", 0)
-        }
+        if (adapter.itemCount != 0) noWorksAddedText.visibility = View.INVISIBLE
     }
 
-    private fun setButtonListeners(){
+    private fun setButtonListeners() {
         imgButtonBack.setOnClickListener {
             setResult(Activity.RESULT_OK)
             finish()
         }
         fab.setOnClickListener {
             val intent = Intent(this, AddWorkActivity::class.java)
-            intent.putExtra("currentCarInfo",currentCarInfo)
-            startActivityForResult(intent,ADD_WORK_ACTIVITY_CODE)
+            intent.putExtra("currentCarId", currentCarId)
+            startActivityForResult(intent, ADD_WORK_ACTIVITY_CODE)
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.work_list_menu, menu)
+        val searchView = menu?.findItem(R.id.searchWorkList)?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?) = false
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                adapter.filter.filter(p0)
+                return false
+            }
+        })
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.searchWorkList) {
-            val searchView = item.actionView as SearchView
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return super.onOptionsItemSelected(item)
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (data != null) {
-            if (requestCode == ADD_WORK_ACTIVITY_CODE) {
-                if (!data.getBooleanExtra("isButtonBack", false)) {
-                    val workInfo = data.getParcelableExtra<WorkInfo>("workInfo")
-                    if (workInfo != null) {
-                        adapter.add(WorkInfo(++lastUsedId,workInfo,currentCarInfo.id))
-                        workInfoDAO.addWorkInfo(WorkInfo(lastUsedId,workInfo,currentCarInfo.id))
-                    }
-                }
+            if (resultCode != RESULT_CODE_BUTTON_BACK) {
+                adapter.updateLists(workInfoDAO.getAllWorksForCar(currentCarId))
+                if (adapter.itemCount != 0) noWorksAddedText.visibility = View.INVISIBLE
             }
-            if (requestCode == EDIT_WORK_ACTIVITY_CODE) {
-                if (!data.getBooleanExtra("isButtonBack", false)) {
-                    val position = data.getIntExtra("position",-1)
-                    val workInfo = data.getParcelableExtra<WorkInfo>("workInfo")
-                    if (!data.getBooleanExtra("isRemoved", false)) {
-                        if (workInfo != null) {
-                            adapter.edit(WorkInfo(position+1, workInfo, currentCarInfo.id),position)
-                            workInfoDAO.update(workInfo)
-                        }
-                    }else{
-                        adapter.remove(position)
-                        if (workInfo != null) {
-                            workInfoDAO.delete(workInfo)
-                        }
-                    }
-                }
-            }
-        }
     }
 
-    override fun onWorkInfoItemClick(workInfo: WorkInfo ,position: Int) {
+    override fun onWorkInfoItemClick(workInfo: WorkInfo, position: Int) {
         val intent = Intent(this, EditWorkActivity::class.java)
-        intent.putExtra("workInfo",workInfo)
-        intent.putExtra("position",position)
-        intent.putExtra("currentCarInfo",currentCarInfo)
-        startActivityForResult(intent,EDIT_WORK_ACTIVITY_CODE)
-    }
-    override fun onDestroy() {
-        val preference = getSharedPreferences("lastUsedId", MODE_PRIVATE)
-        preference.edit().putInt("lastId", lastUsedId).apply()
-        super.onDestroy()
+        intent.putExtra("workInfo", workInfo)
+        startActivityForResult(intent, EDIT_WORK_ACTIVITY_CODE)
     }
 }

@@ -25,11 +25,14 @@ class EditWorkActivity : AppCompatActivity() {
     private lateinit var tvPending: TextView
     private lateinit var tvInProgress: TextView
     private lateinit var tvCompleted: TextView
+    private lateinit var tvCurrentWorkName: TextView
     private lateinit var checkedStatus: String
-    private var position: Int = -1
-    private lateinit var currentCarInfo: CarInfo
+    private var currentCarId: Long = 0
     private lateinit var currentWorkInfo: WorkInfo
-
+    private val RESULT_CODE_BUTTON_BACK = 6
+    private val RESULT_CODE_BUTTON_REMOVE = 7
+    private lateinit var database: DataBaseCarInfo
+    private lateinit var workInfoDAO: WorkInfoDAO
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +51,9 @@ class EditWorkActivity : AppCompatActivity() {
         tvPending = findViewById(R.id.tvPending1)
         tvInProgress = findViewById(R.id.tvInProgress1)
         tvCompleted = findViewById(R.id.tvCompleted1)
+        tvCurrentWorkName = findViewById(R.id.tvCurrentWorkName)
+        database = DataBaseCarInfo.getDataBase(applicationContext)
+        workInfoDAO = database.getWorkInfoDAO()
         setSupportActionBar(toolbar)
         setImageListeners()
         setButtonsListeners()
@@ -57,14 +63,14 @@ class EditWorkActivity : AppCompatActivity() {
     private fun loadDataFromIntent() {
         if (intent != null) {
             currentWorkInfo = intent.getParcelableExtra("workInfo")!!
-                position = intent.getIntExtra("position", -1)
-                currentCarInfo = intent.getParcelableExtra("currentCarInfo")!!
-                val date = currentWorkInfo.date!!
+                currentCarId = currentWorkInfo.carInfoId
+                val date = currentWorkInfo.date
                 textData.text = "${resources.getString(R.string.application_date)} - $date"
                 etWorkName.setText(currentWorkInfo.workName)
                 etWorkDescription.setText(currentWorkInfo.description)
                 etWorkCost.setText(currentWorkInfo.cost)
                 setIconStatus(currentWorkInfo.status)
+                tvCurrentWorkName.text = currentWorkInfo.workName
         }
     }
 
@@ -138,14 +144,8 @@ class EditWorkActivity : AppCompatActivity() {
                 val workDescription = etWorkDescription.text.toString()
                 val workCost = etWorkCost.text.toString()
                 if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
-                    currentWorkInfo.workName = workName
-                    currentWorkInfo.description = workDescription
-                    currentWorkInfo.cost = workCost
-                    currentWorkInfo.status = checkedStatus
-                    intent.putExtra("workInfo", currentWorkInfo)
-                    intent.putExtra("isButtonBack", isButtonBack)
-                    intent.putExtra("isRemoved", false)
-                    intent.putExtra("position", position)
+                    val workInfo = WorkInfo(currentWorkInfo.date,workName,workDescription,workCost,checkedStatus,currentCarId).also { it.id = currentWorkInfo.id }
+                    workInfoDAO.update(workInfo)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 } else {
@@ -156,9 +156,7 @@ class EditWorkActivity : AppCompatActivity() {
             }
 
         } else {
-            intent.putExtra("isButtonBack", isButtonBack)
-            intent.putExtra("isRemoved", false)
-            setResult(Activity.RESULT_OK, intent)
+            setResult(RESULT_CODE_BUTTON_BACK, intent)
             finish()
         }
     }
@@ -169,11 +167,8 @@ class EditWorkActivity : AppCompatActivity() {
                 .setMessage(getString(R.string.warning))
                 .setPositiveButton("Apply",
                         DialogInterface.OnClickListener { dialogInterface, i ->
-                            intent.putExtra("workInfo",currentWorkInfo)
-                            intent.putExtra("isButtonBack", isButtonBack)
-                            intent.putExtra("isRemoved", true)
-                            intent.putExtra("position", position)
-                            setResult(Activity.RESULT_OK, intent)
+                            workInfoDAO.delete(currentWorkInfo)
+                            setResult(RESULT_CODE_BUTTON_REMOVE, intent)
                             finish()
                         })
                 .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, i -> dialogInterface.cancel() })

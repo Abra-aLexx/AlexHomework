@@ -26,7 +26,10 @@ class AddWorkActivity : AppCompatActivity() {
     private lateinit var tvCompleted: TextView
     private var checkedStatus = "pending"
     private lateinit var date: String
-    private lateinit var currentCarInfo: CarInfo
+    private var currentCarId: Long = 0
+    private val RESULT_CODE_BUTTON_BACK = 6
+    private lateinit var database: DataBaseCarInfo
+    private lateinit var workInfoDAO: WorkInfoDAO
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,8 +48,10 @@ class AddWorkActivity : AppCompatActivity() {
         tvPending = findViewById(R.id.tvPending)
         tvInProgress = findViewById(R.id.tvInProgress)
         tvCompleted = findViewById(R.id.tvCompleted)
+        database = DataBaseCarInfo.getDataBase(applicationContext)
+        workInfoDAO = database.getWorkInfoDAO()
         if (intent != null) {
-            currentCarInfo = intent.getParcelableExtra("currentCarInfo")!!
+            currentCarId = intent.getLongExtra("currentCarId",0)
         }
         setSupportActionBar(toolbar)
         setImageListeners()
@@ -102,16 +107,14 @@ class AddWorkActivity : AppCompatActivity() {
             val workDescription = etWorkDescription.text.toString()
             val workCost = etWorkCost.text.toString()
             if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
-                intent.putExtra("workInfo", WorkInfo(date, workName, workDescription, workCost, checkedStatus))
-                intent.putExtra("isButtonBack", isButtonBack)
+                workInfoDAO.addWork(WorkInfo(date, workName, workDescription, workCost, checkedStatus, currentCarId))
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             } else {
                 Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
             }
         } else {
-            intent.putExtra("isButtonBack", isButtonBack)
-            setResult(Activity.RESULT_OK, intent)
+            setResult(RESULT_CODE_BUTTON_BACK, intent)
             finish()
         }
     }
