@@ -14,28 +14,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AlexHomework">
         <activity
-            android:name=".EditWorkActivity"
+            android:name=".activities.EditWorkActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".AddWorkActivity"
+            android:name=".activities.AddWorkActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".EditCarInfoActivity"
+            android:name=".activities.EditCarInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".WorkListActivity"
+            android:name=".activities.WorkListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".AddCarActivity"
+            android:name=".activities.AddCarActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/car_list"
             android:screenOrientation="portrait">
              <intent-filter>

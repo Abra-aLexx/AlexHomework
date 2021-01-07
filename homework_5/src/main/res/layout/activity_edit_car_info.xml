@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditCarInfoActivity">
+    tools:context=".activities.EditCarInfoActivity">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBarEdit"
         android:layout_width="match_parent"
@@ -53,17 +54,18 @@
             </LinearLayout>
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
-        <ImageView
-            android:id="@+id/imageCarPhoto1"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="top|start"
-            android:contentDescription="@string/picture_of_car"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/default_icon"
-            app:layout_constraintTop_toBottomOf="@id/toolBarEdit"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/imageCarPhoto1"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="top|start"
+        android:contentDescription="@string/picture_of_car"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBarEdit"
+        app:srcCompat="@drawable/default_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabLoadPhoto1"

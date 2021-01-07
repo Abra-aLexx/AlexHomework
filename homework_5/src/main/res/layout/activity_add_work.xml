@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddWorkActivity">
+    tools:context=".activities.AddWorkActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBarAddWork"
@@ -155,42 +155,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etWorkDescription">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
             <ImageView
                 android:id="@+id/ivPending"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/icon"
                 android:backgroundTint="@color/work_status_pending"
-                android:src="@drawable/ic_baseline_handyman_48_pending"/>
+                android:contentDescription="@string/icon"
+                android:src="@drawable/ic_baseline_handyman_48_pending" />
+
             <TextView
                 android:id="@+id/tvPending"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/pending"
-                android:layout_gravity="center"
-                android:textColor="@color/work_status_pending"
-                />
+                android:textColor="@color/work_status_pending" />
         </LinearLayout>
 
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:contentDescription="@string/icon"
             android:src="@drawable/ic_baseline_arrow_forward_36" />
 
@@ -199,7 +202,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/icon"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
             <ImageView
                 android:id="@+id/ivInProgress"
                 android:layout_width="wrap_content"
@@ -207,30 +212,33 @@
                 android:layout_gravity="center"
                 android:contentDescription="@string/icon"
                 android:src="@drawable/ic_baseline_handyman_48_default" />
+
             <TextView
                 android:id="@+id/tvInProgress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/in_progress_lowe_case"
-                android:layout_gravity="center"
-                android:textColor="@color/icon_work_default_color"
-                />
+                android:textColor="@color/icon_work_default_color" />
         </LinearLayout>
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:contentDescription="@string/icon"
             android:src="@drawable/ic_baseline_arrow_forward_36" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/icon"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
             <ImageView
                 android:id="@+id/ivCompleted"
                 android:layout_width="wrap_content"
@@ -238,13 +246,14 @@
                 android:layout_gravity="center"
                 android:contentDescription="@string/icon"
                 android:src="@drawable/ic_baseline_handyman_48_default" />
+
             <TextView
                 android:id="@+id/tvCompleted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/completed_in_lower_case"
-                android:layout_gravity="center"
                 android:textColor="@color/icon_work_default_color" />
         </LinearLayout>
     </LinearLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCars"
@@ -35,10 +35,10 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/accent"
+        android:contentDescription="@string/floating_action_button"
         app:fabCustomSize="76dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="32dp"
-        app:srcCompat="@drawable/add_car_icon"
-        android:contentDescription="@string/floating_action_button" />
+        app:srcCompat="@drawable/add_car_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>
