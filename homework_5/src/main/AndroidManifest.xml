@@ -45,6 +45,9 @@
              <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.abra.homework_5.contentprovider.WorkInfoContentProvider"
+            android:name=".contentprovider.WorkInfoContentProvider" />
     </application>
 
 </manifest>

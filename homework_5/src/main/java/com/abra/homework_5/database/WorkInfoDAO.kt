@@ -1,5 +1,6 @@
 package com.abra.homework_5.database
 
+import android.database.Cursor
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -11,7 +12,8 @@ import com.abra.homework_5.data.WorkInfo
 interface WorkInfoDAO {
     @Query("SELECT * FROM works_info WHERE carInfoId = :carInfoId")
     fun getAllWorksForCar(carInfoId: Long): List<WorkInfo>
-
+    @Query("SELECT * FROM works_info")
+    fun selectAll(): Cursor?
     @Insert
     fun addWork(entity: WorkInfo)
 
