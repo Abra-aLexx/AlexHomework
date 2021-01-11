@@ -8,7 +8,7 @@ import android.net.Uri
 import com.abra.homework_5.database.DataBaseCarInfo
 
 class WorkInfoContentProvider: ContentProvider() {
-    private lateinit var database: DataBaseCarInfo
+    private var database: DataBaseCarInfo? = null
     companion object{
         private const val AUTHORITY = "com.abra.homework_5.contentprovider.WorkInfoContentProvider"
         private const val URI_USER_CODE = 1
@@ -18,16 +18,17 @@ class WorkInfoContentProvider: ContentProvider() {
     }
     override fun onCreate(): Boolean {
         context?.run {
-            database = DataBaseCarInfo.getDataBase(this)
+            database = DataBaseCarInfo.getDataBase(this.applicationContext)
         }
         return false
     }
 
     override fun query(p0: Uri, p1: Array<out String>?, p2: String?, p3: Array<out String>?, p4: String?): Cursor? {
+
         var cursor: Cursor? = null
         when(uriMatcher.match(p0)){
             URI_USER_CODE->{
-                cursor = database.getWorkInfoDAO().selectAll()
+                cursor = database?.getWorkInfoDAO()?.selectAll()
             }
         }
         return cursor

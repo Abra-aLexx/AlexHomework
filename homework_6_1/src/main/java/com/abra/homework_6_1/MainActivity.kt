@@ -3,6 +3,7 @@ package com.abra.homework_6_1
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewWorks)
         setRecyclerSettings()
         val cursor = contentResolver.query(Uri.parse(URI_PATH),null,null,null,null)
+        Log.d("tag",cursor.toString())
         cursor?.run {
                 moveToFirst()
                 while (moveToNext()){
