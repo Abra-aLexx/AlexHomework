@@ -23,38 +23,43 @@ class MainActivity : AppCompatActivity() {
         setRecyclerSettings()
         checkPermissions()
     }
-    private fun checkPermissions(){
-        if(ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),MY_PERMISSION_CODE)
-        }else{
+
+    private fun checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), MY_PERMISSION_CODE)
+        } else {
             loadAllPhotos()
             setAdapterListener()
         }
     }
-    private fun setRecyclerSettings(){
+
+    private fun setRecyclerSettings() {
         recyclerPhotos.adapter = adapter
-        recyclerPhotos.layoutManager = GridLayoutManager(this,3)
+        recyclerPhotos.layoutManager = GridLayoutManager(this, 3)
     }
-    private fun loadAllPhotos(){
+
+    private fun loadAllPhotos() {
         adapter.updateList(ImageLoader.loadAllPhotos(this))
     }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == MY_PERMISSION_CODE){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, "Read external storage permission granted",Toast.LENGTH_SHORT).show()
+        if (requestCode == MY_PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Read external storage permission granted", Toast.LENGTH_SHORT).show()
                 loadAllPhotos()
             }
-        }else{
-            Toast.makeText(this, "Read external storage permission denied",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Read external storage permission denied", Toast.LENGTH_SHORT).show()
         }
     }
-    private fun setAdapterListener(){
+
+    private fun setAdapterListener() {
         adapter.showWholeImageListener = {
             val intent = Intent(this, WholeImageActivity::class.java)
-            intent.putExtra("path",it)
-            startActivityForResult(intent,1)
+            intent.putExtra("path", it)
+            startActivityForResult(intent, 1)
         }
     }
 }

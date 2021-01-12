@@ -6,8 +6,8 @@ import android.net.Uri
 import android.provider.MediaStore
 
 class ImageLoader {
-    companion object{
-        fun loadAllPhotos(activity: Activity): ArrayList<Uri>{
+    companion object {
+        fun loadAllPhotos(activity: Activity): ArrayList<Uri> {
             val photoUriList = arrayListOf<Uri>()
             val uriExternal: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             val cursor: Cursor?

@@ -22,21 +22,24 @@ class WholeImageActivity : AppCompatActivity() {
         loadImage()
         setButtonListener()
     }
-    private fun getPathFromIntent(): Uri?{
+
+    private fun getPathFromIntent(): Uri? {
         val path = intent.getParcelableExtra<Uri>("path")
-        if (path!=null){
+        if (path != null) {
             return path
         }
         return null
     }
-    private fun loadImage(){
+
+    private fun loadImage() {
         val path = getPathFromIntent()
-        if (path!=null){
+        if (path != null) {
             Glide.with(this).load(path).into(wholeImage)
             imageName.text = path.lastPathSegment
         }
     }
-    private fun setButtonListener(){
+
+    private fun setButtonListener() {
         btBack.setOnClickListener {
             setResult(Activity.RESULT_OK)
             finish()
