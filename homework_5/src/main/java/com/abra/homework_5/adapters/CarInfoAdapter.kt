@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 
 class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(), Filterable {
     constructor(savedInfo: List<CarInfo>) : this() {
-        carInfoList = savedInfo as ArrayList<CarInfo>
+        carInfoList = ArrayList(savedInfo)
         carInfoListForFilter = ArrayList(carInfoList)
     }
 
@@ -23,25 +23,17 @@ class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(
     lateinit var onEditIconClickListener: (carInfo: CarInfo) -> Unit
     lateinit var onCarInfoShowWorkListClickListener: (carInfo: CarInfo) -> Unit
 
-    class CarInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        constructor(itemView: View, onEditIconClickListener: (carInfo: CarInfo) -> Unit, onCarInfoClickListener: (carInfo: CarInfo) -> Unit) : this(itemView) {
-            listenerCarInfo = onEditIconClickListener
-            listenerShowWorkList = onCarInfoClickListener
-        }
-
-        lateinit var listenerShowWorkList: (carInfo: CarInfo) -> Unit
-        lateinit var listenerCarInfo: (carInfo: CarInfo) -> Unit
+    class CarInfoViewHolder(itemView: View,
+                            private val listenerCarInfo: (carInfo: CarInfo) -> Unit,
+                            private val listenerShowWorkList: (carInfo: CarInfo) -> Unit) : RecyclerView.ViewHolder(itemView) {
         private val editImage: ImageView = itemView.findViewById(R.id.iv_edit_info)
         private val carImage: ImageView = itemView.findViewById(R.id.imageCar)
         private val textName: TextView = itemView.findViewById(R.id.tvName)
         private val textProducer: TextView = itemView.findViewById(R.id.tvProducer)
         private val textModel: TextView = itemView.findViewById(R.id.tvModel)
         fun bind(carInfo: CarInfo) {
-            if (carInfo.pathToPicture == "") {
-                carImage.setImageResource(R.drawable.default_icon)
-            } else {
-                Glide.with(itemView.context).load(carInfo.pathToPicture).into(carImage)
-            }
+            if (carInfo.pathToPicture.isEmpty()) carImage.setImageResource(R.drawable.default_icon)
+            else Glide.with(itemView.context).load(carInfo.pathToPicture).into(carImage)
             textName.text = carInfo.name
             textProducer.text = carInfo.producer
             textModel.text = carInfo.model
@@ -92,13 +84,11 @@ class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(
     }
 
     override fun getFilter() = filter
-    private fun selector(p: CarInfo): String = p.producer.toLowerCase()
 
-    fun sortByCarName(list: List<CarInfo>) {
-        carInfoList = ArrayList(list as ArrayList<CarInfo>)
+    fun updateList(list: List<CarInfo>) {
+        carInfoList = ArrayList(list)
         carInfoListForFilter = ArrayList(list)
-        carInfoList.sortBy { selector(it) }
-        carInfoListForFilter.sortBy { selector(it) }
         notifyDataSetChanged()
     }
+
 }

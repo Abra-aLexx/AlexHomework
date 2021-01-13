@@ -21,10 +21,12 @@ import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 
+private const val REQUEST_CODE_PHOTO = 1
+private const val RESULT_CODE_BUTTON_BACK = 5
+
 class EditCarInfoActivity : AppCompatActivity() {
-    private var carId: Long? = 0
-    private val REQUEST_CODE_PHOTO = 1
-    private val RESULT_CODE_BUTTON_BACK = 5
+    private var carId: Long = 0
+
     private lateinit var textName: EditText
     private lateinit var textProducer: EditText
     private lateinit var textModel: EditText
@@ -62,9 +64,7 @@ class EditCarInfoActivity : AppCompatActivity() {
         val carInfo = intent.getParcelableExtra<CarInfo>("carInfo")
         if (carInfo != null) {
             currentCarInfo = carInfo
-        }
-        carId = carInfo?.id
-        if (carInfo != null) {
+            carId = carInfo.id
             val path = carInfo.pathToPicture
             val file = File(path)
             if (file.exists()) {
@@ -82,12 +82,12 @@ class EditCarInfoActivity : AppCompatActivity() {
         }
     }
 
-    fun setListeners() {
+    private fun setListeners() {
         imgButtonBack.setOnClickListener {
-            showActivity(true)
+            backToPreviousActivity()
         }
         imgButtonApply.setOnClickListener {
-            showActivity(false)
+            editCarInfoAndBackToPreviousActivity()
         }
         fab.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -95,37 +95,39 @@ class EditCarInfoActivity : AppCompatActivity() {
         }
     }
 
-    private fun showActivity(isButtonBack: Boolean) {
+    private fun editCarInfoAndBackToPreviousActivity() {
         val intent = Intent()
-        if (!isButtonBack) {
-            val name = textName.text.toString()
-            val producer = textProducer.text.toString()
-            val model = textModel.text.toString()
-            if (name.isNotEmpty() && producer.isNotEmpty() && model.isNotEmpty()) {
-                if (!photoWasLoaded) {
-                    pathToPicture = ""
-                }
-                val carInfo = CarInfo(pathToPicture, name, producer, model).also { it.id = carId }
-                carInfoDAO.update(carInfo)
-                setResult(Activity.RESULT_OK, intent)
-                finish()
-            } else {
-                Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
+        val name = textName.text.toString()
+        val producer = textProducer.text.toString()
+        val model = textModel.text.toString()
+        if (name.isNotEmpty() && producer.isNotEmpty() && model.isNotEmpty()) {
+            if (!photoWasLoaded) {
+                pathToPicture = ""
             }
-        } else {
-            setResult(RESULT_CODE_BUTTON_BACK, intent)
+            val carInfo = CarInfo(pathToPicture, name, producer, model).also { it.id = carId }
+            carInfoDAO.update(carInfo)
+            setResult(Activity.RESULT_OK, intent)
             finish()
+        } else {
+            Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun backToPreviousActivity() {
+        setResult(RESULT_CODE_BUTTON_BACK, intent)
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null) {
-            if (data.extras?.get("data") != null) {
-                val photo = data.extras!!.get("data") as Bitmap?
-                if (photo != null) {
-                    pathToPicture = saveImage(photo, carPhoto, carPictureDirectory)
-                    photoWasLoaded = true
+            if (data.extras != null) {
+                if (data.extras?.get("data") != null) {
+                    val photo = data.extras?.get("data") as Bitmap?
+                    if (photo != null) {
+                        pathToPicture = saveImage(photo, carPhoto, carPictureDirectory)
+                        photoWasLoaded = true
+                    }
                 }
             }
         }
@@ -138,5 +140,11 @@ class EditCarInfoActivity : AppCompatActivity() {
                 carPictureDirectory.mkdir()
             }
         }
+    }
+
+    override fun onBackPressed() {
+        setResult(RESULT_CODE_BUTTON_BACK, intent)
+        finish()
+        super.onBackPressed()
     }
 }

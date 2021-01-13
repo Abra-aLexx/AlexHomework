@@ -18,6 +18,8 @@ import com.abra.homework_5.database.WorkInfoDAO
 import java.text.SimpleDateFormat
 import java.util.Date
 
+private const val RESULT_CODE_BUTTON_BACK = 6
+
 class AddWorkActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var textData: TextView
@@ -35,7 +37,6 @@ class AddWorkActivity : AppCompatActivity() {
     private lateinit var checkedStatus: String
     private lateinit var date: String
     private var currentCarId: Long = 0
-    private val RESULT_CODE_BUTTON_BACK = 6
     private lateinit var database: DataBaseCarInfo
     private lateinit var workInfoDAO: WorkInfoDAO
 
@@ -110,29 +111,29 @@ class AddWorkActivity : AppCompatActivity() {
 
     private fun setButtonsListeners() {
         imgButtonBack.setOnClickListener {
-            showActivity(true)
+            backToPreviousActivity()
         }
         imgButtonApply.setOnClickListener {
-            showActivity(false)
+            editWorkAndBackToPreviousActivity()
         }
     }
 
-    private fun showActivity(isButtonBack: Boolean) {
+    private fun backToPreviousActivity() {
+        setResult(RESULT_CODE_BUTTON_BACK, intent)
+        finish()
+    }
+
+    private fun editWorkAndBackToPreviousActivity() {
         val intent = Intent()
-        if (!isButtonBack) {
-            val workName = etWorkName.text.toString()
-            val workDescription = etWorkDescription.text.toString()
-            val workCost = etWorkCost.text.toString()
-            if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
-                workInfoDAO.addWork(WorkInfo(date, workName, workDescription, workCost, checkedStatus, currentCarId))
-                setResult(Activity.RESULT_OK, intent)
-                finish()
-            } else {
-                Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            setResult(RESULT_CODE_BUTTON_BACK, intent)
+        val workName = etWorkName.text.toString()
+        val workDescription = etWorkDescription.text.toString()
+        val workCost = etWorkCost.text.toString()
+        if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
+            workInfoDAO.addWork(WorkInfo(date, workName, workDescription, workCost, checkedStatus, currentCarId))
+            setResult(Activity.RESULT_OK, intent)
             finish()
+        } else {
+            Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }
     }
 }

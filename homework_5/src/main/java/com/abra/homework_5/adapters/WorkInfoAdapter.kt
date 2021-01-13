@@ -25,12 +25,8 @@ class WorkInfoAdapter() : RecyclerView.Adapter<WorkInfoAdapter.WorkInfoViewHolde
     private var workInfoListCopyForOrder: ArrayList<WorkInfo> = arrayListOf()
     lateinit var onWorkInfoItemClickListener: (workInfo: WorkInfo) -> Unit
 
-    class WorkInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        constructor(itemView: View, onWorkInfoItemClickListener: (workInfo: WorkInfo) -> Unit) : this(itemView) {
-            listener = onWorkInfoItemClickListener
-        }
-
-        private lateinit var listener: (workInfo: WorkInfo) -> Unit
+    class WorkInfoViewHolder(itemView: View,
+                             private val listener: (workInfo: WorkInfo) -> Unit) : RecyclerView.ViewHolder(itemView) {
         private val imageWork: ImageView = itemView.findViewById(R.id.ivWorkIcon)
         private val workStatus: TextView = itemView.findViewById(R.id.tvWorkStatus)
         private val workName: TextView = itemView.findViewById(R.id.tvWorkNameInList)
