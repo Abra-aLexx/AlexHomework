@@ -19,15 +19,14 @@ abstract class DataBaseCarInfo : RoomDatabase() {
             if (tempInstance != null) {
                 return tempInstance
             }
-            val instance = Room.databaseBuilder(
+            INSTANCE = Room.databaseBuilder(
                     context.applicationContext,
                     DataBaseCarInfo::class.java,
                     "database")
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build()
-            INSTANCE = instance
-            return instance
+            return INSTANCE as DataBaseCarInfo
         }
     }
 }

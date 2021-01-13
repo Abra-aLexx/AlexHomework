@@ -19,6 +19,9 @@ import com.abra.homework_5.data.WorkInfo
 import com.abra.homework_5.database.WorkInfoDAO
 import com.abra.homework_5.functions.setImageStatus
 
+private const val RESULT_CODE_BUTTON_BACK = 6
+private const val RESULT_CODE_BUTTON_REMOVE = 7
+
 class EditWorkActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var textData: TextView
@@ -38,8 +41,6 @@ class EditWorkActivity : AppCompatActivity() {
     private lateinit var checkedStatus: String
     private var currentCarId: Long = 0
     private lateinit var currentWorkInfo: WorkInfo
-    private val RESULT_CODE_BUTTON_BACK = 6
-    private val RESULT_CODE_BUTTON_REMOVE = 7
     private lateinit var database: DataBaseCarInfo
     private lateinit var workInfoDAO: WorkInfoDAO
 
@@ -72,7 +73,8 @@ class EditWorkActivity : AppCompatActivity() {
 
     private fun loadDataFromIntent() {
         if (intent != null) {
-            currentWorkInfo = intent.getParcelableExtra("workInfo")!!
+            currentWorkInfo = intent.getParcelableExtra("workInfo")
+                    ?: WorkInfo("", "", "", "", "", -1)
             currentCarId = currentWorkInfo.carInfoId
             val date = currentWorkInfo.date
             textData.text = "${resources.getString(R.string.application_date)} - $date"
@@ -133,49 +135,48 @@ class EditWorkActivity : AppCompatActivity() {
 
     private fun setButtonsListeners() {
         imgButtonBack.setOnClickListener {
-            showActivity(true, false)
+            backToPreviousActivity()
         }
         imgButtonApply.setOnClickListener {
-            showActivity(false, false)
+            editWorkAndBackToPreviousActivity()
         }
         imgButtonRemove.setOnClickListener {
-            showActivity(false, true)
+            removeWorkAndBackToPreviousActivity()
         }
     }
 
-    private fun showActivity(isButtonBack: Boolean, isRemoved: Boolean) {
+    private fun backToPreviousActivity() {
+        setResult(RESULT_CODE_BUTTON_BACK, intent)
+        finish()
+    }
+
+    private fun removeWorkAndBackToPreviousActivity() {
+        createDialog()
+    }
+
+    private fun editWorkAndBackToPreviousActivity() {
         val intent = Intent()
-        if (!isButtonBack) {
-            if (!isRemoved) {
-                val workName = etWorkName.text.toString()
-                val workDescription = etWorkDescription.text.toString()
-                val workCost = etWorkCost.text.toString()
-                if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
-                    val workInfo = WorkInfo(currentWorkInfo.date, workName, workDescription, workCost, checkedStatus, currentCarId).also { it.id = currentWorkInfo.id }
-                    workInfoDAO.update(workInfo)
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
-                } else {
-                    Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                createDialog(intent, isButtonBack)
-            }
-
-        } else {
-            setResult(RESULT_CODE_BUTTON_BACK, intent)
+        val workName = etWorkName.text.toString()
+        val workDescription = etWorkDescription.text.toString()
+        val workCost = etWorkCost.text.toString()
+        if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
+            val workInfo = WorkInfo(currentWorkInfo.date, workName, workDescription, workCost, checkedStatus, currentCarId).also { it.id = currentWorkInfo.id }
+            workInfoDAO.update(workInfo)
+            setResult(Activity.RESULT_OK, intent)
             finish()
+        } else {
+            Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun createDialog(intent: Intent, isButtonBack: Boolean) {
+    private fun createDialog() {
         val dialog = AlertDialog.Builder(this)
                 .setTitle(getString(R.string.remove_work))
                 .setMessage(getString(R.string.warning))
                 .setPositiveButton("Apply",
                         DialogInterface.OnClickListener { dialogInterface, i ->
                             workInfoDAO.delete(currentWorkInfo)
-                            setResult(RESULT_CODE_BUTTON_REMOVE, intent)
+                            setResult(RESULT_CODE_BUTTON_REMOVE)
                             finish()
                         })
                 .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, i -> dialogInterface.cancel() })

@@ -22,9 +22,11 @@ import com.abra.homework_5.functions.saveImage
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 
+private const val REQUEST_CODE_PHOTO = 1
+private const val RESULT_CODE_BUTTON_BACK = 5
+
 class AddCarActivity : AppCompatActivity() {
-    private val REQUEST_CODE_PHOTO = 1
-    private val RESULT_CODE_BUTTON_BACK = 5
+
     private lateinit var textName: EditText
     private lateinit var textProducer: EditText
     private lateinit var textModel: EditText
@@ -59,12 +61,12 @@ class AddCarActivity : AppCompatActivity() {
         setListeners()
     }
 
-    fun setListeners() {
+    private fun setListeners() {
         imgButtonBack.setOnClickListener {
-            showActivity(true)
+            backToPreviousActivity()
         }
         imgButtonApply.setOnClickListener {
-            showActivity(false)
+            addCarInfoAndBackToPreviousActivity()
         }
         fab.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -72,38 +74,40 @@ class AddCarActivity : AppCompatActivity() {
         }
     }
 
-    private fun showActivity(isButtonBack: Boolean) {
+    private fun addCarInfoAndBackToPreviousActivity() {
         val intent = Intent()
-        if (!isButtonBack) {
-            if (!photoWasLoaded) {
-                pathToPicture = ""
-            }
-            val name = textName.text.toString()
-            val producer = textProducer.text.toString()
-            val model = textModel.text.toString()
-            if (name.isNotEmpty() && producer.isNotEmpty() && model.isNotEmpty()) {
-                val carInfo = CarInfo(pathToPicture, name, producer, model)
-                carInfoDAO.add(carInfo)
-                setResult(Activity.RESULT_OK, intent)
-                finish()
-            } else {
-                Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            setResult(RESULT_CODE_BUTTON_BACK, intent)
-            finish()
+        if (!photoWasLoaded) {
+            pathToPicture = ""
         }
+        val name = textName.text.toString()
+        val producer = textProducer.text.toString()
+        val model = textModel.text.toString()
+        if (name.isNotEmpty() && producer.isNotEmpty() && model.isNotEmpty()) {
+            val carInfo = CarInfo(pathToPicture, name, producer, model)
+            carInfoDAO.add(carInfo)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        } else {
+            Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun backToPreviousActivity() {
+        setResult(RESULT_CODE_BUTTON_BACK, intent)
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null) {
-            if (data.extras?.get("data") != null) {
-                val photo = data.extras!!.get("data") as Bitmap?
-                if (photo != null) {
-                    pathToPicture = saveImage(photo, carPhoto, carPictureDirectory)
-                    photoWasLoaded = true
-                    noCarPhoto.visibility = View.INVISIBLE
+            if (data.extras != null) {
+                if (data.extras?.get("data") != null) {
+                    val photo = data.extras?.get("data") as Bitmap?
+                    if (photo != null) {
+                        pathToPicture = saveImage(photo, carPhoto, carPictureDirectory)
+                        photoWasLoaded = true
+                        noCarPhoto.visibility = View.INVISIBLE
+                    }
                 }
             }
         }

@@ -15,7 +15,7 @@ class WorkInfo(@ColumnInfo val date: String,
                @ColumnInfo val carInfoId: Long) : Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
-    var id: Long? = null
+    var id: Long = 0
 
     constructor(parcel: Parcel) : this(
             parcel.readString().toString(),
@@ -34,7 +34,7 @@ class WorkInfo(@ColumnInfo val date: String,
         parcel.writeString(cost)
         parcel.writeString(status)
         parcel.writeLong(carInfoId)
-        parcel.writeLong(id ?: -1)
+        parcel.writeLong(id)
     }
 
     override fun describeContents(): Int {

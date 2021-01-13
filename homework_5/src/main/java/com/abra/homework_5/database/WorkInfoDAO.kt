@@ -12,8 +12,10 @@ import com.abra.homework_5.data.WorkInfo
 interface WorkInfoDAO {
     @Query("SELECT * FROM works_info WHERE carInfoId = :carInfoId")
     fun getAllWorksForCar(carInfoId: Long): List<WorkInfo>
+
     @Query("SELECT * FROM works_info")
     fun selectAll(): Cursor?
+
     @Insert
     fun addWork(entity: WorkInfo)
 

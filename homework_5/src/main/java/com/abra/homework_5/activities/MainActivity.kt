@@ -19,6 +19,10 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 
+private const val ADD_ACTIVITY_CODE = 1
+private const val EDIT_ACTIVITY_CODE = 2
+private const val WORK_LIST_ACTIVITY = 10
+private const val RESULT_CODE_BUTTON_BACK = 5
 
 class MainActivity : AppCompatActivity() {
     private lateinit var fab: FloatingActionButton
@@ -28,40 +32,41 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: DataBaseCarInfo
     private lateinit var carInfoDAO: CarInfoDAO
     private lateinit var searchView: SearchView
-    private val ADD_ACTIVITY_CODE = 1
-    private val EDDIT_ACTIVITY_CODE = 2
-    private val WORK_LIST_ACTIVITY = 10
-    private val RESULT_CODE_BUTTON_BACK = 5
-    private var searchWasUsed: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         fab = findViewById(R.id.fabAddCar)
         recyclerView = findViewById(R.id.recyclerViewCars)
         noCarsAddedText = findViewById(R.id.tvNoCarsAdded)
-        database = DataBaseCarInfo.getDataBase(this)
-        carInfoDAO = database.getCarInfoDAO()
+        initDatabase()
         setRecyclerSettings()
         setFabListener()
         setAdapterListeners()
         writeLogToFile()
-        checkListSize()
+        setNoCarsTextViewVisibility()
+    }
+
+    private fun initDatabase() {
+        database = DataBaseCarInfo.getDataBase(this)
+        carInfoDAO = database.getCarInfoDAO()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
         searchView = menu?.findItem(R.id.search)?.actionView as SearchView
-        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(p0: String?) = false
+        searchView.apply {
+            imeOptions = EditorInfo.IME_ACTION_DONE
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(p0: String?) = false
 
-            override fun onQueryTextChange(p0: String?): Boolean {
-                searchWasUsed = true
-                adapter.filter.filter(p0)
-                return false
-            }
-        })
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    adapter.filter.filter(p0)
+                    return false
+                }
+            })
+        }
         return true
     }
 
@@ -73,11 +78,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerSettings() {
-        adapter = if (carInfoDAO.getAll().isNotEmpty()) {
-            CarInfoAdapter(carInfoDAO.getAll()).also { it.sortByCarName(carInfoDAO.getAll()) }
-        } else {
-            CarInfoAdapter()
-        }
+        val allDataList = carInfoDAO.getAll().sortedBy { it.producer.toLowerCase() }
+        adapter = CarInfoAdapter(allDataList)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
@@ -85,13 +87,12 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CODE_BUTTON_BACK) {
-            adapter.sortByCarName(carInfoDAO.getAll())
-            if (searchWasUsed) {
+            adapter.updateList(carInfoDAO.getAll().sortedBy { it.producer.toLowerCase() })
+            if (!searchView.isIconified) {
                 searchView.onActionViewCollapsed()
-                searchWasUsed = false
             }
         }
-        checkListSize()
+        setNoCarsTextViewVisibility()
     }
 
     private fun writeLogToFile() {
@@ -107,15 +108,16 @@ class MainActivity : AppCompatActivity() {
         file.writeText(logList.toString())
     }
 
-    private fun checkListSize() {
+    private fun setNoCarsTextViewVisibility() {
         if (adapter.itemCount != 0) noCarsAddedText.visibility = View.INVISIBLE
+        else noCarsAddedText.visibility = View.VISIBLE
     }
 
     private fun setAdapterListeners() {
         adapter.onEditIconClickListener = {
             val intent = Intent(this, EditCarInfoActivity::class.java)
             intent.putExtra("carInfo", it)
-            startActivityForResult(intent, EDDIT_ACTIVITY_CODE)
+            startActivityForResult(intent, EDIT_ACTIVITY_CODE)
         }
         adapter.onCarInfoShowWorkListClickListener = {
             val intent = Intent(this, WorkListActivity::class.java)
