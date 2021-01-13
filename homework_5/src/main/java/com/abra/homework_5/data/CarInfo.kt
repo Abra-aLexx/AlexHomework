@@ -13,7 +13,7 @@ class CarInfo(@ColumnInfo val pathToPicture: String,
               @ColumnInfo var model: String) : Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
-    var id: Long? = null
+    var id: Long = 0
 
     constructor(parcel: Parcel) : this(
             parcel.readString().toString(),
@@ -32,7 +32,7 @@ class CarInfo(@ColumnInfo val pathToPicture: String,
         p0.writeString(name)
         p0.writeString(producer)
         p0.writeString(model)
-        p0.writeLong(id ?: -1)
+        p0.writeLong(id)
     }
 
     companion object CREATOR : Parcelable.Creator<CarInfo> {

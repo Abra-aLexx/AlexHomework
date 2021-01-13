@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <permission android:name="com.abra.homework_5.READ_DATABASE" android:protectionLevel="normal" />
+    <permission android:name="com.abra.homework_5.WRITE_DATABASE" android:protectionLevel="normal" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -45,6 +48,12 @@
              <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.abra.homework_5.contentprovider.WorkInfoContentProvider"
+            android:name=".contentprovider.WorkInfoContentProvider"
+            android:exported="true"
+            android:readPermission="com.abra.homework_5.READ_DATABASE"
+            android:writePermission="com.abra.homework_5.WRITE_DATABASE"/>
     </application>
 
 </manifest>

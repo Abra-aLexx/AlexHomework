@@ -124,74 +124,64 @@
         tools:ignore="LabelFor" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="14dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etOwnerName">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tvProducer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:text="@string/producer"
+            android:textColor="@color/accent"
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/tvProducer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="14dp"
-                android:text="@string/producer"
-                android:textColor="@color/accent"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/etProducer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp"
-                android:backgroundTint="@color/accent"
-                android:backgroundTintMode="add"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:paddingBottom="20dp"
-                android:textSize="20sp"
-                tools:ignore="LabelFor" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/etProducer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:backgroundTint="@color/accent"
+            android:backgroundTintMode="add"
+            android:ems="7"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:paddingBottom="20dp"
+            android:textSize="20sp"
+            tools:ignore="LabelFor" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvModel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="14dp"
-                android:text="@string/model"
-                android:textColor="@color/accent"
-                android:textSize="16sp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etOwnerName">
 
-            <EditText
-                android:id="@+id/etModel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp"
-                android:backgroundTint="@color/accent"
-                android:backgroundTintMode="add"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:paddingBottom="20dp"
-                android:textSize="20sp"
-                tools:ignore="LabelFor" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tvModel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/model"
+            android:textColor="@color/accent"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etModel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accent"
+            android:backgroundTintMode="add"
+            android:ems="7"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:paddingBottom="20dp"
+            android:textSize="20sp"
+            tools:ignore="LabelFor" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
