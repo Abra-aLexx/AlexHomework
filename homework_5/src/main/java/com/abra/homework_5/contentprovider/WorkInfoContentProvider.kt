@@ -7,15 +7,21 @@ import android.database.Cursor
 import android.net.Uri
 import com.abra.homework_5.database.DataBaseCarInfo
 
-class WorkInfoContentProvider: ContentProvider() {
+/**
+ * Класс нужен для доступа ко всем работам из этого модуля.
+ * Используется в модуле с домашней 6.1
+ * */
+class WorkInfoContentProvider : ContentProvider() {
     private var database: DataBaseCarInfo? = null
-    companion object{
+
+    companion object {
         private const val AUTHORITY = "com.abra.homework_5.contentprovider.WorkInfoContentProvider"
         private const val URI_USER_CODE = 1
         private val uriMatcher: UriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
-            addURI(AUTHORITY,"works_info", URI_USER_CODE)
+            addURI(AUTHORITY, "works_info", URI_USER_CODE)
         }
     }
+
     override fun onCreate(): Boolean {
         context?.run {
             database = DataBaseCarInfo.getDataBase(this.applicationContext)
@@ -24,14 +30,12 @@ class WorkInfoContentProvider: ContentProvider() {
     }
 
     override fun query(p0: Uri, p1: Array<out String>?, p2: String?, p3: Array<out String>?, p4: String?): Cursor? {
-
-        var cursor: Cursor? = null
-        when(uriMatcher.match(p0)){
-            URI_USER_CODE->{
-                cursor = database?.getWorkInfoDAO()?.selectAll()
+        when (uriMatcher.match(p0)) {
+            URI_USER_CODE -> {
+                return database?.getWorkInfoDAO()?.selectAll()
             }
         }
-        return cursor
+        return null
     }
 
     override fun getType(p0: Uri): String? {
