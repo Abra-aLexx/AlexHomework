@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abra.homework_7_executor_service.R
 import com.abra.homework_7_executor_service.adapters.CarInfoAdapter
 import com.abra.homework_7_executor_service.repositories.DatabaseRepository
+import com.abra.homework_7_executor_service.services.DatabaseService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.text.SimpleDateFormat
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: CarInfoAdapter
     private lateinit var noCarsAddedText: TextView
     private lateinit var searchView: SearchView
-
+    private lateinit var repository: DatabaseRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewCars)
         noCarsAddedText = findViewById(R.id.tvNoCarsAdded)
         DatabaseRepository.initDatabase(applicationContext)
+        repository = DatabaseRepository(DatabaseService.getInstance())
         setRecyclerSettings()
         setFabListener()
         setAdapterListeners()
@@ -71,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerSettings() {
-        val allDataList = DatabaseRepository.getAllList().sortedBy { it.producer.toLowerCase() }
+        val allDataList = repository.getAllList().sortedBy { it.producer.toLowerCase() }
         Log.d("tag", allDataList.size.toString())
         adapter = CarInfoAdapter(allDataList)
         recyclerView.adapter = adapter
@@ -81,7 +83,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CODE_BUTTON_BACK) {
-            adapter.updateList(DatabaseRepository.getAllList().sortedBy { it.producer.toLowerCase() })
+            adapter.updateList(repository.getAllList().sortedBy { it.producer.toLowerCase() })
             if (!searchView.isIconified) {
                 searchView.onActionViewCollapsed()
             }
@@ -121,7 +123,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        DatabaseRepository.shutdown()
+        DatabaseService.getInstance().shutdown()
         super.onDestroy()
     }
 }

@@ -18,6 +18,7 @@ import com.abra.homework_7_executor_service.data.CarInfo
 import com.abra.homework_7_executor_service.R
 import com.abra.homework_7_executor_service.functions.saveImage
 import com.abra.homework_7_executor_service.repositories.DatabaseRepository
+import com.abra.homework_7_executor_service.services.DatabaseService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 
@@ -37,6 +38,7 @@ class AddCarActivity : AppCompatActivity() {
     private var photoWasLoaded: Boolean = false
     private lateinit var carPictureDirectory: File
     private lateinit var pathToPicture: String
+    private lateinit var repository: DatabaseRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,7 @@ class AddCarActivity : AppCompatActivity() {
         imgButtonApply = findViewById(R.id.imgButtonApply)
         fab = findViewById(R.id.fabLoadPhoto)
         noCarPhoto = findViewById(R.id.tvNoPhoto)
+        repository = DatabaseRepository(DatabaseService.getInstance())
         createDirectoryForPictures()
         setSupportActionBar(toolbar)
         setListeners()
@@ -78,7 +81,7 @@ class AddCarActivity : AppCompatActivity() {
         val model = textModel.text.toString()
         if (name.isNotEmpty() && producer.isNotEmpty() && model.isNotEmpty()) {
             val carInfo = CarInfo(pathToPicture, name, producer, model)
-            DatabaseRepository.addCar(carInfo)
+            repository.addCar(carInfo)
             setResult(Activity.RESULT_OK, intent)
             finish()
         } else {

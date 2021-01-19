@@ -18,6 +18,7 @@ import com.abra.homework_7_executor_service.R
 import com.abra.homework_7_executor_service.adapters.WorkInfoAdapter
 import com.abra.homework_7_executor_service.data.CarInfo
 import com.abra.homework_7_executor_service.repositories.DatabaseRepository
+import com.abra.homework_7_executor_service.services.DatabaseService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 private const val ADD_WORK_ACTIVITY_CODE = 3
@@ -33,10 +34,10 @@ class WorkListActivity : AppCompatActivity() {
     private lateinit var textCarName: TextView
     private lateinit var textCarModel: TextView
     private lateinit var noWorksAddedText: TextView
-
     private var currentCarId: Long = 0
     private lateinit var currentCar: CarInfo
     private lateinit var searchView: SearchView
+    private lateinit var repository: DatabaseRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +50,7 @@ class WorkListActivity : AppCompatActivity() {
         textCarModel = findViewById(R.id.tvWorkListCarModel)
         noWorksAddedText = findViewById(R.id.tvNoWorksAdded)
         setSupportActionBar(toolbar)
+        repository = DatabaseRepository(DatabaseService.getInstance())
         getIntentData()
         setRecyclerSettings()
         setAdapterListener()
@@ -57,7 +59,7 @@ class WorkListActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerSettings() {
-        adapter = WorkInfoAdapter(DatabaseRepository.getAllWorkListForCar(currentCarId))
+        adapter = WorkInfoAdapter(repository.getAllWorkListForCar(currentCarId))
         setAdapterListener()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -136,7 +138,7 @@ class WorkListActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CODE_BUTTON_BACK) {
-            adapter.updateLists(DatabaseRepository.getAllWorkListForCar(currentCarId))
+            adapter.updateLists(repository.getAllWorkListForCar(currentCarId))
             if (!searchView.isIconified) {
                 searchView.onActionViewCollapsed()
             }

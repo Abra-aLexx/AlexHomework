@@ -11,11 +11,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import com.abra.homework_7_executor_service.database.DataBaseCarInfo
 import com.abra.homework_7_executor_service.R
 import com.abra.homework_7_executor_service.data.WorkInfo
-import com.abra.homework_7_executor_service.database.WorkInfoDAO
 import com.abra.homework_7_executor_service.repositories.DatabaseRepository
+import com.abra.homework_7_executor_service.services.DatabaseService
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -38,8 +37,7 @@ class AddWorkActivity : AppCompatActivity() {
     private lateinit var checkedStatus: String
     private lateinit var date: String
     private var currentCarId: Long = 0
-    private lateinit var database: DataBaseCarInfo
-    private lateinit var workInfoDAO: WorkInfoDAO
+    private lateinit var repository: DatabaseRepository
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +56,7 @@ class AddWorkActivity : AppCompatActivity() {
         tvPending = findViewById(R.id.tvPending)
         tvInProgress = findViewById(R.id.tvInProgress)
         tvCompleted = findViewById(R.id.tvCompleted)
+        repository = DatabaseRepository(DatabaseService.getInstance())
         loadDataFromIntent()
         setSupportActionBar(toolbar)
         setImageListeners()
@@ -128,7 +127,7 @@ class AddWorkActivity : AppCompatActivity() {
         val workDescription = etWorkDescription.text.toString()
         val workCost = etWorkCost.text.toString()
         if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
-            DatabaseRepository.addWork(WorkInfo(date, workName, workDescription, workCost, checkedStatus, currentCarId))
+            repository.addWork(WorkInfo(date, workName, workDescription, workCost, checkedStatus, currentCarId))
             setResult(Activity.RESULT_OK, intent)
             finish()
         } else {

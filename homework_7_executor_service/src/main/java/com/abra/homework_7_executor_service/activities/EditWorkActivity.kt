@@ -16,6 +16,7 @@ import com.abra.homework_7_executor_service.R
 import com.abra.homework_7_executor_service.data.WorkInfo
 import com.abra.homework_7_executor_service.functions.setImageStatus
 import com.abra.homework_7_executor_service.repositories.DatabaseRepository
+import com.abra.homework_7_executor_service.services.DatabaseService
 
 private const val RESULT_CODE_BUTTON_BACK = 6
 private const val RESULT_CODE_BUTTON_REMOVE = 7
@@ -39,6 +40,7 @@ class EditWorkActivity : AppCompatActivity() {
     private lateinit var checkedStatus: String
     private var currentCarId: Long = 0
     private lateinit var currentWorkInfo: WorkInfo
+    private lateinit var repository: DatabaseRepository
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +61,7 @@ class EditWorkActivity : AppCompatActivity() {
         tvInProgress = findViewById(R.id.tvInProgress1)
         tvCompleted = findViewById(R.id.tvCompleted1)
         tvCurrentWorkName = findViewById(R.id.tvCurrentWorkName)
+        repository = DatabaseRepository(DatabaseService.getInstance())
         setSupportActionBar(toolbar)
         setImageListeners()
         setButtonsListeners()
@@ -155,7 +158,7 @@ class EditWorkActivity : AppCompatActivity() {
         val workCost = etWorkCost.text.toString()
         if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
             val workInfo = WorkInfo(currentWorkInfo.date, workName, workDescription, workCost, checkedStatus, currentCarId).also { it.id = currentWorkInfo.id }
-            DatabaseRepository.updateWorkInfo(workInfo)
+            repository.updateWorkInfo(workInfo)
             setResult(Activity.RESULT_OK, intent)
             finish()
         } else {
@@ -169,7 +172,7 @@ class EditWorkActivity : AppCompatActivity() {
                 .setMessage(getString(R.string.warning))
                 .setPositiveButton("Apply"
                 ) { dialogInterface, i ->
-                    DatabaseRepository.deleteWork(currentWorkInfo)
+                    repository.deleteWork(currentWorkInfo)
                     setResult(RESULT_CODE_BUTTON_REMOVE)
                     finish()
                 }
