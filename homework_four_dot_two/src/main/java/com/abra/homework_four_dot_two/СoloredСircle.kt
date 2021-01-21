@@ -11,7 +11,6 @@ class ColoredCircle : View {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     private var centerX = 0f
     private var centerY = 0f
@@ -24,13 +23,14 @@ class ColoredCircle : View {
             resources.getColor(R.color.orange), resources.getColor(R.color.dark_green))
     private val paintSmall = Paint()
     private val arrayPaints: Array<Paint> = arrayOf(Paint(), Paint(), Paint(), Paint())
+
     /*
      * Решил сделать через Region, потому что не нашел другого решения, если знаете более
      * лучший способ реализации, то буду рад любому совету
      */
     private val regionsArray: Array<Region> = arrayOf(Region(), Region(), Region(), Region())
     private var smallCircleRegion = Region()
-    lateinit var showCoordinatesListener: (x: Int, y: Int, view: View, color: Int) -> Unit
+    lateinit var showCoordinatesListener: (Int, Int, View, Int) -> Unit
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -65,11 +65,13 @@ class ColoredCircle : View {
     }
 
     override fun onDraw(canvas: Canvas) {
-        canvas.drawArc(rectF, 0F, 90F, true, arrayPaints[0])
-        canvas.drawArc(rectF, 90F, 90F, true, arrayPaints[1])
-        canvas.drawArc(rectF, 180F, 90F, true, arrayPaints[2])
-        canvas.drawArc(rectF, 270F, 90F, true, arrayPaints[3])
-        canvas.drawCircle(centerX, centerY, radiusSmall, paintSmall)
+        with(canvas) {
+            drawArc(rectF, 0F, 90F, true, arrayPaints[0])
+            drawArc(rectF, 90F, 90F, true, arrayPaints[1])
+            drawArc(rectF, 180F, 90F, true, arrayPaints[2])
+            drawArc(rectF, 270F, 90F, true, arrayPaints[3])
+            drawCircle(centerX, centerY, radiusSmall, paintSmall)
+        }
         super.onDraw(canvas)
     }
 
@@ -84,18 +86,18 @@ class ColoredCircle : View {
                     for (i in 1..4) {
                         colors.add(allColors.random())
                     }
-                    showCoordinatesListener(x.toInt(), y.toInt(),this, colors.random())
+                    showCoordinatesListener(x.toInt(), y.toInt(), this, colors.random())
                     setPainters()
                     invalidate()
                 } else {
-                    for (i in regionsArray.indices) {
-                        if (regionsArray[i].contains(x.toInt(), y.toInt())!!) {
-                            colors[i] = allColors.random()
-                            showCoordinatesListener(x.toInt(), y.toInt(),this, colors[i])
-                            setPainters()
-                            invalidate()
+                    regionsArray.forEach {
+                        if (it.contains(x.toInt(), y.toInt())) {
+                            colors[regionsArray.indexOf(it)] = allColors.random()
+                            showCoordinatesListener(x.toInt(), y.toInt(), this, colors[regionsArray.indexOf(it)])
                         }
                     }
+                    setPainters()
+                    invalidate()
                 }
             }
         }
