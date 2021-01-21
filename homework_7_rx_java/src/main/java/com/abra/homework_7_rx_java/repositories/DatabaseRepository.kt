@@ -4,6 +4,7 @@ import android.content.Context
 import com.abra.homework_7_rx_java.data.CarInfo
 import com.abra.homework_7_rx_java.data.WorkInfo
 import com.abra.homework_7_rx_java.database.DataBaseCarInfo
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -39,13 +40,11 @@ class DatabaseRepository {
                 .blockingSubscribe()
     }
 
-    fun getAllWorkListForCar(id: Long): List<WorkInfo> {
-        return Single.create<List<WorkInfo>> {
-            val list = database.getWorkInfoDAO().getAllWorksForCar(id)
-            it.onSuccess(list)
-        }.subscribeOn(Schedulers.io())
-                .blockingGet()
-    }
+    fun getAllWorkListForCar(id: Long): Single<List<WorkInfo>> = Single.create<List<WorkInfo>> {
+        val list = database.getWorkInfoDAO().getAllWorksForCar(id)
+        it.onSuccess(list)
+    }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
     fun addCar(info: CarInfo) {
         Single.create<CarInfo> {
@@ -63,11 +62,9 @@ class DatabaseRepository {
                 .blockingSubscribe()
     }
 
-    fun getAllList(): List<CarInfo> {
-        return Single.create<List<CarInfo>> {
-            val list = database.getCarInfoDAO().getAll()
-            it.onSuccess(list)
-        }.subscribeOn(Schedulers.io())
-                .blockingGet()
-    }
+    fun getAllList(): Single<List<CarInfo>> = Single.create<List<CarInfo>> {
+        val list = database.getCarInfoDAO().getAll()
+        it.onSuccess(list)
+    }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }

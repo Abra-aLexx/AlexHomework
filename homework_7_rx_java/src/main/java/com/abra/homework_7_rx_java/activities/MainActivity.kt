@@ -3,7 +3,6 @@ package com.abra.homework_7_rx_java.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -43,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         setFabListener()
         setAdapterListeners()
         writeLogToFile()
-        setNoCarsTextViewVisibility()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -72,22 +70,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerSettings() {
-        val allDataList = repository.getAllList().sortedBy { it.producer.toLowerCase() }
-        Log.d("tag", allDataList.size.toString())
-        adapter = CarInfoAdapter(allDataList)
+        adapter = CarInfoAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        repository.getAllList()
+                .subscribe { list ->
+                    adapter.updateList(list.sortedBy { it.producer.toLowerCase() })
+                    setNoCarsTextViewVisibility()
+                }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CODE_BUTTON_BACK) {
-            adapter.updateList(repository.getAllList().sortedBy { it.producer.toLowerCase() })
+            repository.getAllList()
+                    .subscribe { list ->
+                        adapter.updateList(list.sortedBy { it.producer.toLowerCase() })
+                        setNoCarsTextViewVisibility()
+                    }
             if (!searchView.isIconified) {
                 searchView.onActionViewCollapsed()
             }
         }
-        setNoCarsTextViewVisibility()
     }
 
     private fun writeLogToFile() {

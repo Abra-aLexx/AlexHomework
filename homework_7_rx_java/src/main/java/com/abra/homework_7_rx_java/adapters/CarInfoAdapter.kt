@@ -12,11 +12,7 @@ import com.abra.homework_7_rx_java.R
 import com.abra.homework_7_rx_java.data.CarInfo
 import com.bumptech.glide.Glide
 
-class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(), Filterable {
-    constructor(savedInfo: List<CarInfo>) : this() {
-        carInfoList = ArrayList(savedInfo)
-        carInfoListForFilter = ArrayList(carInfoList)
-    }
+class CarInfoAdapter : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(), Filterable {
 
     private var carInfoList: ArrayList<CarInfo> = arrayListOf()
     private var carInfoListForFilter: ArrayList<CarInfo> = arrayListOf()

@@ -13,12 +13,7 @@ import com.abra.homework_7_rx_java.R
 import com.abra.homework_7_rx_java.data.WorkInfo
 import com.abra.homework_7_rx_java.functions.setImageStatus
 
-class WorkInfoAdapter() : RecyclerView.Adapter<WorkInfoAdapter.WorkInfoViewHolder>(), Filterable {
-    constructor(savedInfo: List<WorkInfo>) : this() {
-        workInfoList = savedInfo as ArrayList<WorkInfo>
-        workInfoListForFilter = ArrayList(workInfoList)
-        workInfoListCopyForOrder = ArrayList(workInfoList)
-    }
+class WorkInfoAdapter : RecyclerView.Adapter<WorkInfoAdapter.WorkInfoViewHolder>(), Filterable {
 
     private var workInfoList: ArrayList<WorkInfo> = arrayListOf()
     private var workInfoListForFilter: ArrayList<WorkInfo> = arrayListOf()

@@ -54,14 +54,17 @@ class WorkListActivity : AppCompatActivity() {
         setRecyclerSettings()
         setAdapterListener()
         setButtonListeners()
-        setNoWorksTextViewVisibility()
     }
 
     private fun setRecyclerSettings() {
-        adapter = WorkInfoAdapter(repository.getAllWorkListForCar(currentCarId))
-        setAdapterListener()
+        adapter = WorkInfoAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        repository.getAllWorkListForCar(currentCarId)
+                .subscribe { list ->
+                    adapter.updateLists(list)
+                    setNoWorksTextViewVisibility()
+                }
     }
 
     private fun setAdapterListener() {
@@ -137,12 +140,15 @@ class WorkListActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CODE_BUTTON_BACK) {
-            adapter.updateLists(repository.getAllWorkListForCar(currentCarId))
+            repository.getAllWorkListForCar(currentCarId)
+                    .subscribe { list ->
+                        adapter.updateLists(list)
+                        setNoWorksTextViewVisibility()
+                    }
             if (!searchView.isIconified) {
                 searchView.onActionViewCollapsed()
             }
         }
-        setNoWorksTextViewVisibility()
     }
 
     override fun onBackPressed() {
