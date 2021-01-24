@@ -2,6 +2,7 @@ package com.abra.homework_7_completable_future.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -11,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
 import androidx.appcompat.widget.SearchView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,7 @@ import com.abra.homework_7_completable_future.adapters.WorkInfoAdapter
 import com.abra.homework_7_completable_future.data.CarInfo
 import com.abra.homework_7_completable_future.repositories.DatabaseRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.*
 
 private const val ADD_WORK_ACTIVITY_CODE = 3
 private const val EDIT_WORK_ACTIVITY_CODE = 4
@@ -54,14 +57,23 @@ class WorkListActivity : AppCompatActivity() {
         setRecyclerSettings()
         setAdapterListener()
         setButtonListeners()
-        setNoWorksTextViewVisibility()
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun setRecyclerSettings() {
-        adapter = WorkInfoAdapter(repository.getAllWorkListForCar(currentCarId))
+        adapter = WorkInfoAdapter()
         setAdapterListener()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        repository.getAllWorkListForCar(currentCarId)
+                .thenAcceptAsync({list ->
+                    adapter.updateLists(list)
+                    setNoWorksTextViewVisibility()
+                }, mainExecutor)
+//        repository.getAllWorkListForCar(currentCarId).thenApply { list ->
+//            adapter.updateLists(list)
+//            setNoWorksTextViewVisibility()
+//        }
     }
 
     private fun setAdapterListener() {
@@ -134,15 +146,26 @@ class WorkListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CODE_BUTTON_BACK) {
-            adapter.updateLists(repository.getAllWorkListForCar(currentCarId))
+            /*
+            * Была проблема с отображение TextView(No works added),
+            * но потом понял, что надо менять видимость в главном потоке,
+            * так как по правилам UI обновляется только в нем.
+            * Честно не понял, почему mainExecutor поддерживается только
+            * с версияй API >= 28
+            * */
+            repository.getAllWorkListForCar(currentCarId)
+                    .thenAcceptAsync({list ->
+                adapter.updateLists(list)
+                setNoWorksTextViewVisibility()
+            }, mainExecutor)
             if (!searchView.isIconified) {
                 searchView.onActionViewCollapsed()
             }
         }
-        setNoWorksTextViewVisibility()
     }
 
     override fun onBackPressed() {

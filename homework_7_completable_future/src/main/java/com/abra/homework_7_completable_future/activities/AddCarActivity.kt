@@ -80,9 +80,10 @@ class AddCarActivity : AppCompatActivity() {
         val model = textModel.text.toString()
         if (name.isNotEmpty() && producer.isNotEmpty() && model.isNotEmpty()) {
             val carInfo = CarInfo(pathToPicture, name, producer, model)
-            repository.addCar(carInfo)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            repository.addCar(carInfo).thenRun {
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
         } else {
             Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }

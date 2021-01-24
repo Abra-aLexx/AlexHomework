@@ -127,8 +127,10 @@ class AddWorkActivity : AppCompatActivity() {
         val workCost = etWorkCost.text.toString()
         if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
             repository.addWork(WorkInfo(date, workName, workDescription, workCost, checkedStatus, currentCarId))
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+                    .thenRun {
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    }
         } else {
             Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }

@@ -157,9 +157,10 @@ class EditWorkActivity : AppCompatActivity() {
         val workCost = etWorkCost.text.toString()
         if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
             val workInfo = WorkInfo(currentWorkInfo.date, workName, workDescription, workCost, checkedStatus, currentCarId).also { it.id = currentWorkInfo.id }
-            repository.updateWorkInfo(workInfo)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            repository.updateWorkInfo(workInfo).thenRun{
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
         } else {
             Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }
@@ -171,9 +172,10 @@ class EditWorkActivity : AppCompatActivity() {
                 .setMessage(getString(R.string.warning))
                 .setPositiveButton("Apply"
                 ) { dialogInterface, i ->
-                    repository.deleteWork(currentWorkInfo)
-                    setResult(RESULT_CODE_BUTTON_REMOVE)
-                    finish()
+                    repository.deleteWork(currentWorkInfo).thenRun {
+                        setResult(RESULT_CODE_BUTTON_REMOVE)
+                        finish()
+                    }
                 }
                 .setNegativeButton("Cancel") { dialogInterface, i -> dialogInterface.cancel() }
                 .setCancelable(false)

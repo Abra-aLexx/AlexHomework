@@ -13,63 +13,31 @@ class DatabaseRepository {
             database = DataBaseCarInfo.getDataBase(context)
         }
     }
-
-    fun addWork(info: WorkInfo) {
-        val completableFuture = CompletableFuture.runAsync {
-            database.getWorkInfoDAO().addWork(info)
-        }
-        if (!completableFuture.isDone) {
-            completableFuture.get()
-        }
+    fun addWork(info: WorkInfo): CompletableFuture<Void> = CompletableFuture.runAsync {
+        database.getWorkInfoDAO().addWork(info)
     }
 
-    fun updateWorkInfo(info: WorkInfo) {
-        val completableFuture = CompletableFuture.runAsync {
-            database.getWorkInfoDAO().update(info)
-        }
-        if (!completableFuture.isDone) {
-            completableFuture.get()
-        }
+    fun updateWorkInfo(info: WorkInfo): CompletableFuture<Void> = CompletableFuture.runAsync {
+        database.getWorkInfoDAO().update(info)
     }
 
-    fun deleteWork(info: WorkInfo) {
-        val completableFuture = CompletableFuture.runAsync {
+    fun deleteWork(info: WorkInfo): CompletableFuture<Void> = CompletableFuture.runAsync {
             database.getWorkInfoDAO().delete(info)
         }
-        if (!completableFuture.isDone) {
-            completableFuture.get()
-        }
-    }
 
-    fun getAllWorkListForCar(id: Long): List<WorkInfo> {
-        val completableFuture = CompletableFuture.supplyAsync {
+    fun getAllWorkListForCar(id: Long): CompletableFuture<List<WorkInfo>> = CompletableFuture.supplyAsync {
             return@supplyAsync database.getWorkInfoDAO().getAllWorksForCar(id)
         }
-        return completableFuture.get()
-    }
 
-    fun addCar(info: CarInfo) {
-        val completableFuture = CompletableFuture.runAsync {
+    fun addCar(info: CarInfo): CompletableFuture<Void> = CompletableFuture.runAsync {
             database.getCarInfoDAO().add(info)
         }
-        if (!completableFuture.isDone) {
-            completableFuture.get()
-        }
-    }
 
-    fun updateCarInfo(info: CarInfo) {
-        val completableFuture = CompletableFuture.runAsync {
+    fun updateCarInfo(info: CarInfo): CompletableFuture<Void> = CompletableFuture.runAsync {
             database.getCarInfoDAO().update(info)
         }
-        if (!completableFuture.isDone) {
-            completableFuture.get()
-        }
-    }
 
-    fun getAllList(): List<CarInfo> {
-        val completableFuture = CompletableFuture.supplyAsync {
-            return@supplyAsync database.getCarInfoDAO().getAll()
-        }
-        return completableFuture.get()
+    fun getAllList(): CompletableFuture<List<CarInfo>> = CompletableFuture.supplyAsync {
+        return@supplyAsync database.getCarInfoDAO().getAll()
     }
 }

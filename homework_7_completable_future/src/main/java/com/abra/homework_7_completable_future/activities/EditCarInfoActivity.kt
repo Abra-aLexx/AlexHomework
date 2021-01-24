@@ -101,9 +101,10 @@ class EditCarInfoActivity : AppCompatActivity() {
                 pathToPicture = ""
             }
             val carInfo = CarInfo(pathToPicture, name, producer, model).also { it.id = carId }
-            repository.updateCarInfo(carInfo)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            repository.updateCarInfo(carInfo).thenRun {
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
         } else {
             Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }

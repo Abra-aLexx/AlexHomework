@@ -1,6 +1,7 @@
 package com.abra.homework_7_completable_future.activities
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abra.homework_7_completable_future.R
@@ -17,7 +19,7 @@ import com.abra.homework_7_completable_future.repositories.DatabaseRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 
 private const val ADD_ACTIVITY_CODE = 1
 private const val EDIT_ACTIVITY_CODE = 2
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var noCarsAddedText: TextView
     private lateinit var searchView: SearchView
     private lateinit var repository: DatabaseRepository
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -43,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         setFabListener()
         setAdapterListeners()
         writeLogToFile()
-        setNoCarsTextViewVisibility()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,23 +73,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun setRecyclerSettings() {
-        val allDataList = repository.getAllList().sortedBy { it.producer.toLowerCase() }
-        Log.d("tag", allDataList.size.toString())
-        adapter = CarInfoAdapter(allDataList)
+        adapter = CarInfoAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        repository.getAllList().thenApply { list ->
+            adapter.updateList(list.sortedBy { it.producer.toLowerCase(Locale.ROOT) })
+            setNoCarsTextViewVisibility()
+        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CODE_BUTTON_BACK) {
-            adapter.updateList(repository.getAllList().sortedBy { it.producer.toLowerCase() })
+            repository.getAllList()
+                    .thenAcceptAsync({list ->
+                        adapter.updateList(list.sortedBy { it.producer.toLowerCase(Locale.ROOT) })
+                        setNoCarsTextViewVisibility()
+                    }, mainExecutor)
             if (!searchView.isIconified) {
                 searchView.onActionViewCollapsed()
             }
         }
-        setNoCarsTextViewVisibility()
     }
 
     private fun writeLogToFile() {
