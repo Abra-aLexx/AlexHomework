@@ -29,28 +29,15 @@ class WorkInfoContentProvider : ContentProvider() {
         return false
     }
 
-    override fun query(p0: Uri, p1: Array<out String>?, p2: String?, p3: Array<out String>?, p4: String?): Cursor? {
-        when (uriMatcher.match(p0)) {
-            URI_USER_CODE -> {
-                return database?.getWorkInfoDAO()?.selectAll()
-            }
-        }
-        return null
-    }
+    override fun query(p0: Uri, p1: Array<out String>?, p2: String?, p3: Array<out String>?, p4: String?) =
+            if (uriMatcher.match(p0) == URI_USER_CODE)
+                database?.getWorkInfoDAO()?.selectAll() else null
 
-    override fun getType(p0: Uri): String? {
-        return "object/*"
-    }
+    override fun getType(p0: Uri) = "object/*"
 
-    override fun insert(p0: Uri, p1: ContentValues?): Uri? {
-        return null
-    }
+    override fun insert(p0: Uri, p1: ContentValues?) = null
 
-    override fun delete(p0: Uri, p1: String?, p2: Array<out String>?): Int {
-        return 0
-    }
+    override fun delete(p0: Uri, p1: String?, p2: Array<out String>?) = 0
 
-    override fun update(p0: Uri, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int {
-        return 0
-    }
+    override fun update(p0: Uri, p1: ContentValues?, p2: String?, p3: Array<out String>?) = 0
 }
