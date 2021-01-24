@@ -18,8 +18,10 @@ import com.abra.homework_7_coroutines.data.CarInfo
 import com.abra.homework_7_coroutines.R
 import com.abra.homework_7_coroutines.functions.saveImage
 import com.abra.homework_7_coroutines.repositories.DatabaseRepository
-import com.abra.homework_7_coroutines.scopes.DatabaseCoroutineScope
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -40,7 +42,7 @@ class AddCarActivity : AppCompatActivity() {
     private lateinit var carPictureDirectory: File
     private lateinit var pathToPicture: String
     private lateinit var repository: DatabaseRepository
-
+    private lateinit var activityScope: CoroutineScope
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_car)
@@ -53,7 +55,8 @@ class AddCarActivity : AppCompatActivity() {
         imgButtonApply = findViewById(R.id.imgButtonApply)
         fab = findViewById(R.id.fabLoadPhoto)
         noCarPhoto = findViewById(R.id.tvNoPhoto)
-        repository = DatabaseRepository()
+        activityScope = CoroutineScope(Dispatchers.Main + Job())
+        repository = DatabaseRepository(activityScope)
         createDirectoryForPictures()
         setSupportActionBar(toolbar)
         setListeners()
@@ -82,7 +85,7 @@ class AddCarActivity : AppCompatActivity() {
         val model = textModel.text.toString()
         if (name.isNotEmpty() && producer.isNotEmpty() && model.isNotEmpty()) {
             val carInfo = CarInfo(pathToPicture, name, producer, model)
-            DatabaseCoroutineScope.getInstance().launch {
+            activityScope.launch {
                 repository.addCar(carInfo)
                 setResult(Activity.RESULT_OK, intent)
                 finish()

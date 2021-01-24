@@ -16,9 +16,11 @@ import com.abra.homework_7_coroutines.data.CarInfo
 import com.abra.homework_7_coroutines.R
 import com.abra.homework_7_coroutines.functions.saveImage
 import com.abra.homework_7_coroutines.repositories.DatabaseRepository
-import com.abra.homework_7_coroutines.scopes.DatabaseCoroutineScope
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -40,6 +42,7 @@ class EditCarInfoActivity : AppCompatActivity() {
     private lateinit var carPictureDirectory: File
     private lateinit var currentCarInfo: CarInfo
     private lateinit var repository: DatabaseRepository
+    private lateinit var activityScope: CoroutineScope
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_car_info)
@@ -51,7 +54,8 @@ class EditCarInfoActivity : AppCompatActivity() {
         imgButtonBack = findViewById(R.id.imgButtonBack1)
         imgButtonApply = findViewById(R.id.imgButtonApply1)
         fab = findViewById(R.id.fabLoadPhoto1)
-        repository = DatabaseRepository()
+        activityScope = CoroutineScope(Dispatchers.Main + Job())
+        repository = DatabaseRepository(activityScope)
         createDirectoryForPictures()
         setSupportActionBar(toolbar)
         setListeners()
@@ -103,7 +107,7 @@ class EditCarInfoActivity : AppCompatActivity() {
                 pathToPicture = ""
             }
             val carInfo = CarInfo(pathToPicture, name, producer, model).also { it.id = carId }
-            DatabaseCoroutineScope.getInstance().launch {
+            activityScope.launch {
                 repository.updateCarInfo(carInfo)
                 setResult(Activity.RESULT_OK, intent)
                 finish()

@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abra.homework_7_coroutines.R
 import com.abra.homework_7_coroutines.adapters.CarInfoAdapter
 import com.abra.homework_7_coroutines.repositories.DatabaseRepository
-import com.abra.homework_7_coroutines.scopes.DatabaseCoroutineScope
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var noCarsAddedText: TextView
     private lateinit var searchView: SearchView
     private lateinit var repository: DatabaseRepository
+    private lateinit var activityScope: CoroutineScope
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,7 +42,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewCars)
         noCarsAddedText = findViewById(R.id.tvNoCarsAdded)
         DatabaseRepository.initDatabase(applicationContext)
-        repository = DatabaseRepository()
+        activityScope = CoroutineScope(Dispatchers.Main + Job())
+        repository = DatabaseRepository(activityScope)
         setRecyclerSettings()
         setFabListener()
         setAdapterListeners()
@@ -76,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         adapter = CarInfoAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        DatabaseCoroutineScope.getInstance().launch {
+        activityScope.launch {
             adapter.updateList(repository.getAllList().sortedBy { it.producer.toLowerCase() })
             setNoCarsTextViewVisibility()
         }
@@ -85,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CODE_BUTTON_BACK) {
-            DatabaseCoroutineScope.getInstance().launch {
+            activityScope.launch {
                 adapter.updateList(repository.getAllList().sortedBy { it.producer.toLowerCase() })
                 setNoCarsTextViewVisibility()
             }

@@ -18,8 +18,10 @@ import com.abra.homework_7_coroutines.R
 import com.abra.homework_7_coroutines.adapters.WorkInfoAdapter
 import com.abra.homework_7_coroutines.data.CarInfo
 import com.abra.homework_7_coroutines.repositories.DatabaseRepository
-import com.abra.homework_7_coroutines.scopes.DatabaseCoroutineScope
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 private const val ADD_WORK_ACTIVITY_CODE = 3
@@ -39,7 +41,7 @@ class WorkListActivity : AppCompatActivity() {
     private lateinit var currentCar: CarInfo
     private lateinit var searchView: SearchView
     private lateinit var repository: DatabaseRepository
-
+    private lateinit var activityScope: CoroutineScope
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_work_list)
@@ -51,7 +53,8 @@ class WorkListActivity : AppCompatActivity() {
         textCarModel = findViewById(R.id.tvWorkListCarModel)
         noWorksAddedText = findViewById(R.id.tvNoWorksAdded)
         setSupportActionBar(toolbar)
-        repository = DatabaseRepository()
+        activityScope = CoroutineScope(Dispatchers.Main + Job())
+        repository = DatabaseRepository(activityScope)
         getIntentData()
         setRecyclerSettings()
         setAdapterListener()
@@ -62,7 +65,7 @@ class WorkListActivity : AppCompatActivity() {
         adapter = WorkInfoAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        DatabaseCoroutineScope.getInstance().launch {
+        activityScope.launch {
             adapter.updateLists(repository.getAllWorkListForCar(currentCarId))
             setNoWorksTextViewVisibility()
         }
@@ -141,7 +144,7 @@ class WorkListActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CODE_BUTTON_BACK) {
-            DatabaseCoroutineScope.getInstance().launch {
+            activityScope.launch {
                 adapter.updateLists(repository.getAllWorkListForCar(currentCarId))
                 setNoWorksTextViewVisibility()
             }

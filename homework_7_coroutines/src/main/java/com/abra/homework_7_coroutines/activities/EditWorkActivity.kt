@@ -16,7 +16,9 @@ import com.abra.homework_7_coroutines.R
 import com.abra.homework_7_coroutines.data.WorkInfo
 import com.abra.homework_7_coroutines.functions.setImageStatus
 import com.abra.homework_7_coroutines.repositories.DatabaseRepository
-import com.abra.homework_7_coroutines.scopes.DatabaseCoroutineScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 private const val RESULT_CODE_BUTTON_BACK = 6
@@ -42,7 +44,7 @@ class EditWorkActivity : AppCompatActivity() {
     private var currentCarId: Long = 0
     private lateinit var currentWorkInfo: WorkInfo
     private lateinit var repository: DatabaseRepository
-
+    private lateinit var activityScope: CoroutineScope
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +65,8 @@ class EditWorkActivity : AppCompatActivity() {
         tvCompleted = findViewById(R.id.tvCompleted1)
         tvCurrentWorkName = findViewById(R.id.tvCurrentWorkName)
         setSupportActionBar(toolbar)
-        repository = DatabaseRepository()
+        activityScope = CoroutineScope(Dispatchers.Main + Job())
+        repository = DatabaseRepository(activityScope)
         setImageListeners()
         setButtonsListeners()
         loadDataFromIntent()
@@ -159,7 +162,7 @@ class EditWorkActivity : AppCompatActivity() {
         val workCost = etWorkCost.text.toString()
         if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
             val workInfo = WorkInfo(currentWorkInfo.date, workName, workDescription, workCost, checkedStatus, currentCarId).also { it.id = currentWorkInfo.id }
-            DatabaseCoroutineScope.getInstance().launch {
+            activityScope.launch {
                 repository.updateWorkInfo(workInfo)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
@@ -175,7 +178,7 @@ class EditWorkActivity : AppCompatActivity() {
                 .setMessage(getString(R.string.warning))
                 .setPositiveButton("Apply"
                 ) { dialogInterface, i ->
-                    DatabaseCoroutineScope.getInstance().launch {
+                    activityScope.launch {
                         repository.deleteWork(currentWorkInfo)
                         setResult(RESULT_CODE_BUTTON_REMOVE)
                         finish()

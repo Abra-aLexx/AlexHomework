@@ -4,14 +4,13 @@ import android.content.Context
 import com.abra.homework_7_coroutines.data.CarInfo
 import com.abra.homework_7_coroutines.data.WorkInfo
 import com.abra.homework_7_coroutines.database.DataBaseCarInfo
-import com.abra.homework_7_coroutines.scopes.DatabaseCoroutineScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-class DatabaseRepository {
+class DatabaseRepository(private val scope: CoroutineScope) {
     companion object {
-        private val scope = DatabaseCoroutineScope.getInstance()
         private lateinit var database: DataBaseCarInfo
         fun initDatabase(context: Context) {
             database = DataBaseCarInfo.getDataBase(context)

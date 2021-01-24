@@ -14,7 +14,9 @@ import androidx.appcompat.widget.Toolbar
 import com.abra.homework_7_coroutines.R
 import com.abra.homework_7_coroutines.data.WorkInfo
 import com.abra.homework_7_coroutines.repositories.DatabaseRepository
-import com.abra.homework_7_coroutines.scopes.DatabaseCoroutineScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -39,7 +41,7 @@ class AddWorkActivity : AppCompatActivity() {
     private lateinit var date: String
     private var currentCarId: Long = 0
     private lateinit var repository: DatabaseRepository
-
+    private lateinit var activityScope: CoroutineScope
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +59,8 @@ class AddWorkActivity : AppCompatActivity() {
         tvPending = findViewById(R.id.tvPending)
         tvInProgress = findViewById(R.id.tvInProgress)
         tvCompleted = findViewById(R.id.tvCompleted)
-        repository = DatabaseRepository()
+        activityScope = CoroutineScope(Dispatchers.Main + Job())
+        repository = DatabaseRepository(activityScope)
         loadDataFromIntent()
         setSupportActionBar(toolbar)
         setImageListeners()
@@ -128,7 +131,7 @@ class AddWorkActivity : AppCompatActivity() {
         val workDescription = etWorkDescription.text.toString()
         val workCost = etWorkCost.text.toString()
         if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
-            DatabaseCoroutineScope.getInstance().launch {
+            activityScope.launch {
                 repository.addWork(WorkInfo(date, workName, workDescription, workCost, checkedStatus, currentCarId))
                 setResult(Activity.RESULT_OK, intent)
                 finish()
