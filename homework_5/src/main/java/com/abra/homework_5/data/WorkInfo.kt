@@ -7,12 +7,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "works_info")
-class WorkInfo(@ColumnInfo val date: String,
-               @ColumnInfo var workName: String,
-               @ColumnInfo var description: String,
-               @ColumnInfo var cost: String,
-               @ColumnInfo var status: String,
-               @ColumnInfo val carInfoId: Long) : Parcelable {
+class WorkInfo(@ColumnInfo val date: String = "",
+               @ColumnInfo var workName: String = "",
+               @ColumnInfo var description: String = "",
+               @ColumnInfo var cost: String = "",
+               @ColumnInfo var status: String = "",
+               @ColumnInfo val carInfoId: Long = -1) : Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
     var id: Long = 0

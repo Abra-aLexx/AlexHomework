@@ -2,8 +2,6 @@ package com.abra.homework_5.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.DialogInterface
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
@@ -74,7 +72,7 @@ class EditWorkActivity : AppCompatActivity() {
     private fun loadDataFromIntent() {
         if (intent != null) {
             currentWorkInfo = intent.getParcelableExtra("workInfo")
-                    ?: WorkInfo("", "", "", "", "", -1)
+                    ?: WorkInfo()
             currentCarId = currentWorkInfo.carInfoId
             val date = currentWorkInfo.date
             textData.text = "${resources.getString(R.string.application_date)} - $date"
@@ -155,14 +153,13 @@ class EditWorkActivity : AppCompatActivity() {
     }
 
     private fun editWorkAndBackToPreviousActivity() {
-        val intent = Intent()
         val workName = etWorkName.text.toString()
         val workDescription = etWorkDescription.text.toString()
         val workCost = etWorkCost.text.toString()
         if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
             val workInfo = WorkInfo(currentWorkInfo.date, workName, workDescription, workCost, checkedStatus, currentCarId).also { it.id = currentWorkInfo.id }
             workInfoDAO.update(workInfo)
-            setResult(Activity.RESULT_OK, intent)
+            setResult(Activity.RESULT_OK)
             finish()
         } else {
             Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
@@ -170,16 +167,16 @@ class EditWorkActivity : AppCompatActivity() {
     }
 
     private fun createDialog() {
-        val dialog = AlertDialog.Builder(this)
+        AlertDialog.Builder(this)
                 .setTitle(getString(R.string.remove_work))
                 .setMessage(getString(R.string.warning))
-                .setPositiveButton("Apply",
-                        DialogInterface.OnClickListener { dialogInterface, i ->
-                            workInfoDAO.delete(currentWorkInfo)
-                            setResult(RESULT_CODE_BUTTON_REMOVE)
-                            finish()
-                        })
-                .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, i -> dialogInterface.cancel() })
+                .setPositiveButton("Apply"
+                ) { dialogInterface, i ->
+                    workInfoDAO.delete(currentWorkInfo)
+                    setResult(RESULT_CODE_BUTTON_REMOVE)
+                    finish()
+                }
+                .setNegativeButton("Cancel") { dialogInterface, i -> dialogInterface.cancel() }
                 .setCancelable(false)
                 .create()
                 .show()

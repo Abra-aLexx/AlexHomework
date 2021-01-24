@@ -18,6 +18,7 @@ import com.abra.homework_5.data.CarInfo
 import com.abra.homework_5.database.CarInfoDAO
 import com.abra.homework_5.database.DataBaseCarInfo
 import com.abra.homework_5.R
+import com.abra.homework_5.functions.createDirectory
 import com.abra.homework_5.functions.saveImage
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
@@ -75,7 +76,6 @@ class AddCarActivity : AppCompatActivity() {
     }
 
     private fun addCarInfoAndBackToPreviousActivity() {
-        val intent = Intent()
         if (!photoWasLoaded) {
             pathToPicture = ""
         }
@@ -85,7 +85,7 @@ class AddCarActivity : AppCompatActivity() {
         if (name.isNotEmpty() && producer.isNotEmpty() && model.isNotEmpty()) {
             val carInfo = CarInfo(pathToPicture, name, producer, model)
             carInfoDAO.add(carInfo)
-            setResult(Activity.RESULT_OK, intent)
+            setResult(Activity.RESULT_OK)
             finish()
         } else {
             Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
@@ -99,26 +99,16 @@ class AddCarActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (data != null) {
-            if (data.extras != null) {
-                if (data.extras?.get("data") != null) {
-                    val photo = data.extras?.get("data") as Bitmap?
-                    if (photo != null) {
-                        pathToPicture = saveImage(photo, carPhoto, carPictureDirectory)
-                        photoWasLoaded = true
-                        noCarPhoto.visibility = View.INVISIBLE
-                    }
-                }
-            }
+        data?.extras?.get("data")?.run {
+            pathToPicture = saveImage(this as Bitmap, carPhoto, carPictureDirectory)
+            photoWasLoaded = true
+            noCarPhoto.visibility = View.INVISIBLE
         }
     }
 
     private fun createDirectoryForPictures() {
-        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-            carPictureDirectory = File("${getExternalFilesDir(Environment.DIRECTORY_PICTURES)}/CarPictures")
-            if (!carPictureDirectory.exists()) {
-                carPictureDirectory.mkdir()
-            }
+        createDirectory(applicationContext)?.run {
+            carPictureDirectory = this
         }
     }
 }

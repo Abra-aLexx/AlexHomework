@@ -15,17 +15,14 @@ abstract class DataBaseCarInfo : RoomDatabase() {
     companion object {
         private var INSTANCE: DataBaseCarInfo? = null
         fun getDataBase(context: Context): DataBaseCarInfo {
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
+            if (INSTANCE == null) {
+                INSTANCE = Room.databaseBuilder(
+                        context.applicationContext,
+                        DataBaseCarInfo::class.java,
+                        "database")
+                        .allowMainThreadQueries()
+                        .build()
             }
-            INSTANCE = Room.databaseBuilder(
-                    context.applicationContext,
-                    DataBaseCarInfo::class.java,
-                    "database")
-                    .allowMainThreadQueries()
-                    .fallbackToDestructiveMigration()
-                    .build()
             return INSTANCE as DataBaseCarInfo
         }
     }
