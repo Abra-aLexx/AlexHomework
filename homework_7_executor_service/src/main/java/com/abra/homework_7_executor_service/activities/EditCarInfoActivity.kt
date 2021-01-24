@@ -39,6 +39,8 @@ class EditCarInfoActivity : AppCompatActivity() {
     private lateinit var carPictureDirectory: File
     private lateinit var currentCarInfo: CarInfo
     private lateinit var repository: DatabaseRepository
+    private lateinit var callbackListener: () -> Unit
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_car_info)
@@ -93,7 +95,6 @@ class EditCarInfoActivity : AppCompatActivity() {
     }
 
     private fun editCarInfoAndBackToPreviousActivity() {
-        val intent = Intent()
         val name = textName.text.toString()
         val producer = textProducer.text.toString()
         val model = textModel.text.toString()
@@ -102,16 +103,18 @@ class EditCarInfoActivity : AppCompatActivity() {
                 pathToPicture = ""
             }
             val carInfo = CarInfo(pathToPicture, name, producer, model).also { it.id = carId }
-            repository.updateCarInfo(carInfo)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            callbackListener = {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+            repository.updateCarInfo(carInfo, callbackListener)
         } else {
             Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun backToPreviousActivity() {
-        setResult(RESULT_CODE_BUTTON_BACK, intent)
+        setResult(RESULT_CODE_BUTTON_BACK)
         finish()
     }
 
@@ -140,7 +143,7 @@ class EditCarInfoActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        setResult(RESULT_CODE_BUTTON_BACK, intent)
+        setResult(RESULT_CODE_BUTTON_BACK)
         finish()
         super.onBackPressed()
     }

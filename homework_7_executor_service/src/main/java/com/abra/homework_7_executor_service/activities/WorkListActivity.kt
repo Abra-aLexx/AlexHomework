@@ -2,6 +2,7 @@ package com.abra.homework_7_executor_service.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -11,12 +12,14 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
 import androidx.appcompat.widget.SearchView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abra.homework_7_executor_service.R
 import com.abra.homework_7_executor_service.adapters.WorkInfoAdapter
 import com.abra.homework_7_executor_service.data.CarInfo
+import com.abra.homework_7_executor_service.data.WorkInfo
 import com.abra.homework_7_executor_service.repositories.DatabaseRepository
 import com.abra.homework_7_executor_service.services.DatabaseService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -38,7 +41,9 @@ class WorkListActivity : AppCompatActivity() {
     private lateinit var currentCar: CarInfo
     private lateinit var searchView: SearchView
     private lateinit var repository: DatabaseRepository
+    private lateinit var callbackListener: (List<WorkInfo>) -> Unit
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_work_list)
@@ -55,14 +60,19 @@ class WorkListActivity : AppCompatActivity() {
         setRecyclerSettings()
         setAdapterListener()
         setButtonListeners()
-        setNoWorksTextViewVisibility()
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun setRecyclerSettings() {
-        adapter = WorkInfoAdapter(repository.getAllWorkListForCar(currentCarId))
+        adapter = WorkInfoAdapter()
         setAdapterListener()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        callbackListener = { list ->
+            adapter.updateLists(list)
+            setNoWorksTextViewVisibility()
+        }
+        repository.getAllWorkListForCar(currentCarId, callbackListener, mainExecutor)
     }
 
     private fun setAdapterListener() {
@@ -135,15 +145,19 @@ class WorkListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CODE_BUTTON_BACK) {
-            adapter.updateLists(repository.getAllWorkListForCar(currentCarId))
+            callbackListener = { list ->
+                adapter.updateLists(list)
+                setNoWorksTextViewVisibility()
+            }
+            repository.getAllWorkListForCar(currentCarId, callbackListener, mainExecutor)
             if (!searchView.isIconified) {
                 searchView.onActionViewCollapsed()
             }
         }
-        setNoWorksTextViewVisibility()
     }
 
     override fun onBackPressed() {

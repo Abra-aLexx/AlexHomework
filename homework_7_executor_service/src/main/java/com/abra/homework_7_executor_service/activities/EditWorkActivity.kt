@@ -2,7 +2,6 @@ package com.abra.homework_7_executor_service.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
@@ -41,6 +40,7 @@ class EditWorkActivity : AppCompatActivity() {
     private var currentCarId: Long = 0
     private lateinit var currentWorkInfo: WorkInfo
     private lateinit var repository: DatabaseRepository
+    private lateinit var callbackListener: () -> Unit
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,7 +143,7 @@ class EditWorkActivity : AppCompatActivity() {
     }
 
     private fun backToPreviousActivity() {
-        setResult(RESULT_CODE_BUTTON_BACK, intent)
+        setResult(RESULT_CODE_BUTTON_BACK)
         finish()
     }
 
@@ -152,15 +152,16 @@ class EditWorkActivity : AppCompatActivity() {
     }
 
     private fun editWorkAndBackToPreviousActivity() {
-        val intent = Intent()
         val workName = etWorkName.text.toString()
         val workDescription = etWorkDescription.text.toString()
         val workCost = etWorkCost.text.toString()
         if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
             val workInfo = WorkInfo(currentWorkInfo.date, workName, workDescription, workCost, checkedStatus, currentCarId).also { it.id = currentWorkInfo.id }
-            repository.updateWorkInfo(workInfo)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            callbackListener = {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+            repository.updateWorkInfo(workInfo, callbackListener)
         } else {
             Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }
@@ -172,9 +173,11 @@ class EditWorkActivity : AppCompatActivity() {
                 .setMessage(getString(R.string.warning))
                 .setPositiveButton("Apply"
                 ) { dialogInterface, i ->
-                    repository.deleteWork(currentWorkInfo)
-                    setResult(RESULT_CODE_BUTTON_REMOVE)
-                    finish()
+                    callbackListener = {
+                        setResult(RESULT_CODE_BUTTON_REMOVE)
+                        finish()
+                    }
+                    repository.deleteWork(currentWorkInfo, callbackListener)
                 }
                 .setNegativeButton("Cancel") { dialogInterface, i -> dialogInterface.cancel() }
                 .setCancelable(false)

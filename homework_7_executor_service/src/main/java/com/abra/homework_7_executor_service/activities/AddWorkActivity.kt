@@ -2,7 +2,6 @@ package com.abra.homework_7_executor_service.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
@@ -38,6 +37,7 @@ class AddWorkActivity : AppCompatActivity() {
     private lateinit var date: String
     private var currentCarId: Long = 0
     private lateinit var repository: DatabaseRepository
+    private lateinit var callbackListener: () -> Unit
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,14 +122,15 @@ class AddWorkActivity : AppCompatActivity() {
     }
 
     private fun editWorkAndBackToPreviousActivity() {
-        val intent = Intent()
         val workName = etWorkName.text.toString()
         val workDescription = etWorkDescription.text.toString()
         val workCost = etWorkCost.text.toString()
         if (workName.isNotEmpty() && workDescription.isNotEmpty() && workCost.isNotEmpty()) {
-            repository.addWork(WorkInfo(date, workName, workDescription, workCost, checkedStatus, currentCarId))
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            callbackListener = {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+            repository.addWork(WorkInfo(date, workName, workDescription, workCost, checkedStatus, currentCarId), callbackListener)
         } else {
             Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }

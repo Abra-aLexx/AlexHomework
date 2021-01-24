@@ -4,6 +4,7 @@ import android.content.Context
 import com.abra.homework_7_executor_service.data.CarInfo
 import com.abra.homework_7_executor_service.data.WorkInfo
 import com.abra.homework_7_executor_service.database.DataBaseCarInfo
+import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 
 class DatabaseRepository(private val service: ExecutorService) {
@@ -14,62 +15,61 @@ class DatabaseRepository(private val service: ExecutorService) {
         }
     }
 
-    fun addWork(info: WorkInfo) {
-        val future = service.submit {
+    fun addWork(info: WorkInfo, callbackListener: () -> Unit) {
+        service.submit {
             database.getWorkInfoDAO().addWork(info)
-        }
-        if (!future.isDone) {
-            future.get()
+            callbackListener.invoke()
         }
     }
 
-    fun updateWorkInfo(info: WorkInfo) {
-        val future = service.submit {
+    fun updateWorkInfo(info: WorkInfo, callbackListener: () -> Unit) {
+        service.submit {
             database.getWorkInfoDAO().update(info)
-        }
-        if (!future.isDone) {
-            future.get()
+            callbackListener.invoke()
         }
     }
 
-    fun deleteWork(info: WorkInfo) {
-        val future = service.submit {
+    fun deleteWork(info: WorkInfo, callbackListener: () -> Unit) {
+        service.submit {
             database.getWorkInfoDAO().delete(info)
-        }
-        if (!future.isDone) {
-            future.get()
+            callbackListener.invoke()
         }
     }
 
-    fun getAllWorkListForCar(id: Long): List<WorkInfo> {
-        val future = service.submit<List<WorkInfo>> {
-            return@submit database.getWorkInfoDAO().getAllWorksForCar(id)
+    fun getAllWorkListForCar(id: Long, callbackListener: (List<WorkInfo>) -> Unit, executor: Executor) {
+        service.submit {
+            val list = database.getWorkInfoDAO().getAllWorksForCar(id)
+            executor.execute {
+                callbackListener.invoke(list)
+            }
         }
-        return future.get()
     }
 
-    fun addCar(info: CarInfo) {
-        val future = service.submit {
+    fun addCar(info: CarInfo, callbackListener: () -> Unit) {
+        service.submit {
             database.getCarInfoDAO().add(info)
-        }
-        if (!future.isDone) {
-            future.get()
+            callbackListener.invoke()
         }
     }
 
-    fun updateCarInfo(info: CarInfo) {
-        val future = service.submit {
+    fun updateCarInfo(info: CarInfo, callbackListener: () -> Unit) {
+        service.submit {
             database.getCarInfoDAO().update(info)
-        }
-        if (!future.isDone) {
-            future.get()
+            callbackListener.invoke()
         }
     }
 
-    fun getAllList(): List<CarInfo> {
-        val future = service.submit<List<CarInfo>> {
-            return@submit database.getCarInfoDAO().getAll()
+    fun getAllList(callbackListener: (List<CarInfo>) -> Unit, executor: Executor) {
+        service.submit {
+            val list = database.getCarInfoDAO().getAll()
+            /*
+            * Додумался до такого переключения на главный поток,
+            * не уверен, что правильно, зато работает и нету бага
+            * с TextView(NoCarsAdded)
+            * */
+            executor.execute {
+                callbackListener.invoke(list)
+            }
         }
-        return future.get()
     }
 }

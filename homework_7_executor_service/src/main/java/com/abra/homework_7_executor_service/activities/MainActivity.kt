@@ -1,18 +1,20 @@
 package com.abra.homework_7_executor_service.activities
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abra.homework_7_executor_service.R
 import com.abra.homework_7_executor_service.adapters.CarInfoAdapter
+import com.abra.homework_7_executor_service.data.CarInfo
 import com.abra.homework_7_executor_service.repositories.DatabaseRepository
 import com.abra.homework_7_executor_service.services.DatabaseService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -32,6 +34,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var noCarsAddedText: TextView
     private lateinit var searchView: SearchView
     private lateinit var repository: DatabaseRepository
+    private lateinit var callbackListener: (List<CarInfo>) -> Unit
+
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         setFabListener()
         setAdapterListeners()
         writeLogToFile()
-        setNoCarsTextViewVisibility()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -72,23 +76,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun setRecyclerSettings() {
-        val allDataList = repository.getAllList().sortedBy { it.producer.toLowerCase() }
-        Log.d("tag", allDataList.size.toString())
-        adapter = CarInfoAdapter(allDataList)
+        adapter = CarInfoAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        callbackListener = { list ->
+            adapter.updateList(list.sortedBy { it.producer.toLowerCase() })
+            setNoCarsTextViewVisibility()
+        }
+        repository.getAllList(callbackListener, mainExecutor)
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CODE_BUTTON_BACK) {
-            adapter.updateList(repository.getAllList().sortedBy { it.producer.toLowerCase() })
+            callbackListener = { list ->
+                adapter.updateList(list.sortedBy { it.producer.toLowerCase() })
+                setNoCarsTextViewVisibility()
+            }
+            repository.getAllList(callbackListener, mainExecutor)
             if (!searchView.isIconified) {
                 searchView.onActionViewCollapsed()
             }
         }
-        setNoCarsTextViewVisibility()
     }
 
     private fun writeLogToFile() {
