@@ -92,7 +92,6 @@ class EditCarInfoActivity : AppCompatActivity() {
     }
 
     private fun editCarInfoAndBackToPreviousActivity() {
-        val intent = Intent()
         val name = textName.text.toString()
         val producer = textProducer.text.toString()
         val model = textModel.text.toString()
@@ -102,8 +101,10 @@ class EditCarInfoActivity : AppCompatActivity() {
             }
             val carInfo = CarInfo(pathToPicture, name, producer, model).also { it.id = carId }
             repository.updateCarInfo(carInfo)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+                    .subscribe() {
+                        setResult(Activity.RESULT_OK)
+                        finish()
+                    }
         } else {
             Toast.makeText(this, "Fields can't be empty", Toast.LENGTH_SHORT).show()
         }
