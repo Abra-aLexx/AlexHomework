@@ -1,7 +1,9 @@
 package com.abra.homework_5.functions
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
+import android.os.Environment
 import android.widget.ImageView
 import android.widget.TextView
 import com.abra.homework_5.R
@@ -36,4 +38,15 @@ fun setImageStatus(status: String, resources: Resources, iv: ImageView, tv: Text
             tv.setTextColor(resources.getColor(R.color.work_status_completed))
         }
     }
+}
+
+fun createDirectory(context: Context): File? {
+    if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+        val carPictureDirectory = File("${context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)}/CarPictures")
+        if (!carPictureDirectory.exists()) {
+            carPictureDirectory.mkdir()
+        }
+        return carPictureDirectory
+    }
+    return null
 }
