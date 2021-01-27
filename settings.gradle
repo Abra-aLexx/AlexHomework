@@ -1,2 +1,13 @@
+include ':homework_8_1'
+include ':homework_7_coroutines'
+include ':homework_7_rx_java'
+include ':homework_7_completable_future'
+include ':homework_7_executor_service'
+include ':homework_6_2'
+include ':homework_6_1'
+include ':homework_5'
+include ':homework_four_dot_two'
+include ':homework_four_dot_one'
+include ':homework_three'
 include ':homework_two'
 rootProject.name = "AlexHomework"

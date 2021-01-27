@@ -11,6 +11,17 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/homework_5" />
+            <option value="$PROJECT_DIR$/homework_6_1" />
+            <option value="$PROJECT_DIR$/homework_6_2" />
+            <option value="$PROJECT_DIR$/homework_7_completable_future" />
+            <option value="$PROJECT_DIR$/homework_7_coroutines" />
+            <option value="$PROJECT_DIR$/homework_7_executor_service" />
+            <option value="$PROJECT_DIR$/homework_7_rx_java" />
+            <option value="$PROJECT_DIR$/homework_8_1" />
+            <option value="$PROJECT_DIR$/homework_four_dot_one" />
+            <option value="$PROJECT_DIR$/homework_four_dot_two" />
+            <option value="$PROJECT_DIR$/homework_three" />
             <option value="$PROJECT_DIR$/homework_two" />
           </set>
         </option>
