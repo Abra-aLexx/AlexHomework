@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">homework_7_rx_java</string>
+    <string name="car_list">Список автомобилей(rx_java)</string>
+    <string name="search">Поиск</string>
+    <string name="no_cars_added">Нету добавленных машин</string>
+    <string name="example">Пример</string>
+    <string name="picture_of_car">Картинка автомобиля</string>
+    <string name="icon">иконка</string>
+    <string name="no_photo">Нет фотографии</string>
+    <string name="owner_name">Имя владельца</string>
+    <string name="producer">Марка автомобиля</string>
+    <string name="model">Номер</string>
+    <string name="floating_action_button">круглая кнопка</string>
+    <string name="button">кнопка</string>
+    <string name="car_info">Информация об авто</string>
+    <string name="in_progress">На стадии</string>
+    <string name="in_pending">Ожидают</string>
+    <string name="completed">Выполнены</string>
+    <string name="completed_in_lower_case">готова</string>
+    <string name="add_car">Добавить авто</string>
+    <string name="add_work">Добавить работу</string>
+    <string name="work_name">Название работы</string>
+    <string name="cost">Цена ($)</string>
+    <string name="description">Описание</string>
+    <string name="pending">ожидает</string>
+    <string name="in_progress_lowe_case">на стадии</string>
+    <string name="application_date">Дата регистрации</string>
+    <string name="remove_work">Удалить работу</string>
+    <string name="warning">Вы уверенны, что хотите удалить данные?</string>
+    <string name="no_works_added">Нету добавленных работ</string>
+    <string name="all">Все</string>
+</resources>
