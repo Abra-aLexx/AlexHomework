@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">homework_6_1</string>
+    <string name="example">Пример</string>
+    <string name="picture_of_car">Картинка автомобиля</string>
+    <string name="button">кнопка</string>
+    <string name="completed_in_lower_case">готова</string>
+    <string name="pending">ожидает</string>
+    <string name="in_progress_lowe_case">на стадии</string>
+</resources>

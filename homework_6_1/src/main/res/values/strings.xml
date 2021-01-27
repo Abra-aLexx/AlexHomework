@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">homework_6_1</string>
+    <string name="example">Example</string>
+    <string name="picture_of_car">Picture of car</string>
+    <string name="button">button</string>
+    <string name="completed_in_lower_case">completed</string>
+    <string name="pending">pending</string>
+    <string name="in_progress_lowe_case">in progress</string>
+</resources>
