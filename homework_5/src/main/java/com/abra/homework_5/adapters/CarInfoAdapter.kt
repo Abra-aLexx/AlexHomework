@@ -90,5 +90,4 @@ class CarInfoAdapter() : RecyclerView.Adapter<CarInfoAdapter.CarInfoViewHolder>(
         carInfoListForFilter = ArrayList(list)
         notifyDataSetChanged()
     }
-
 }
