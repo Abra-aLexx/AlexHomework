@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBarEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imgButtonBack1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/primary"
+                android:contentDescription="@string/button"
+                android:src="@drawable/ic_baseline_arrow_back_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:gravity="center"
+                android:text="@string/car_info"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/imgButtonApply1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:background="@color/primary"
+                    android:contentDescription="@string/button"
+                    android:src="@drawable/ic_baseline_check_24" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/imageCarPhoto1"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="top|start"
+        android:contentDescription="@string/picture_of_car"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBarEdit"
+        app:srcCompat="@drawable/default_icon" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabLoadPhoto1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/accent"
+        android:contentDescription="@string/floating_action_button"
+        android:src="@drawable/ic_baseline_photo_camera_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBarEdit" />
+
+    <TextView
+        android:id="@+id/tvOwnerName1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="14dp"
+        android:text="@string/owner_name"
+        android:textColor="@color/accent"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageCarPhoto1" />
+
+    <EditText
+        android:id="@+id/etOwnerName1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/accent"
+        android:backgroundTintMode="add"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:paddingBottom="20dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvOwnerName1"
+        tools:ignore="LabelFor" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="14dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etOwnerName1">
+
+        <TextView
+            android:id="@+id/tvProducer1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/producer"
+            android:textColor="@color/accent"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etProducer1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accent"
+            android:backgroundTintMode="add"
+            android:ems="7"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:paddingBottom="20dp"
+            android:textSize="20sp"
+            tools:ignore="LabelFor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etOwnerName1">
+
+        <TextView
+            android:id="@+id/tvModel1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/model"
+            android:textColor="@color/accent"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etModel1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accent"
+            android:backgroundTintMode="add"
+            android:ems="7"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:paddingBottom="20dp"
+            android:textSize="20sp"
+            tools:ignore="LabelFor" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

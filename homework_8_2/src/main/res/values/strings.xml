@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">homework_8.2</string>
+    <string name="car_list">Car list</string>
+    <string name="search">Search</string>
+    <string name="no_cars_added">No cars added</string>
+    <string name="example">Example</string>
+    <string name="picture_of_car">Picture of car</string>
+    <string name="icon">icon</string>
+    <string name="no_photo">No photo</string>
+    <string name="owner_name">Owner name</string>
+    <string name="producer">Producer</string>
+    <string name="model">Model</string>
+    <string name="floating_action_button">floating action button</string>
+    <string name="button">button</string>
+    <string name="car_info">Car info</string>
+    <string name="in_progress">In progress</string>
+    <string name="in_pending">In pending</string>
+    <string name="completed">Completed</string>
+    <string name="completed_in_lower_case">completed</string>
+    <string name="add_car">Add car</string>
+    <string name="add_work">Add work</string>
+    <string name="work_name">Work name</string>
+    <string name="cost">Cost ($)</string>
+    <string name="description">Description</string>
+    <string name="pending">pending</string>
+    <string name="in_progress_lowe_case">in progress</string>
+    <string name="application_date">Application date</string>
+    <string name="remove_work">Remove work</string>
+    <string name="warning">Are you sure you want to delete data?</string>
+    <string name="no_works_added">No works added</string>
+    <string name="all">All</string>
+</resources>
