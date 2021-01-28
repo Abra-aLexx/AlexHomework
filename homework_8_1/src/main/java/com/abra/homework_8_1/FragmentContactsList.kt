@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,17 +19,15 @@ class FragmentContactsList : Fragment(R.layout.fragment_contacts_list) {
     private lateinit var contactItemAdapter: ContactItemAdapter
     private lateinit var button: FloatingActionButton
     private lateinit var searchView: SearchView
-    private lateinit var toolbar: Toolbar
-    private lateinit var mainActivity: MainActivity
     private lateinit var fragmentManager: FragmentManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbar = view.findViewById(R.id.toolBarSearch)
-        mainActivity = activity as MainActivity
-        button = view.findViewById(R.id.floatingActionButton)
-        recyclerView = view.findViewById(R.id.recyclerView)
-        searchView = view.findViewById(R.id.searchView)
+        with(view) {
+            button = findViewById(R.id.floatingActionButton)
+            recyclerView = findViewById(R.id.recyclerView)
+            searchView = findViewById(R.id.searchView)
+        }
         createFragmentManager()
         setRecyclerViewSettings()
         getData(requireArguments())
@@ -71,7 +69,7 @@ class FragmentContactsList : Fragment(R.layout.fragment_contacts_list) {
 
     private fun setRecyclerViewSettings() {
         contactItemAdapter = ContactItemAdapter()
-        val rotation = mainActivity.windowManager.defaultDisplay.rotation
+        val rotation = requireActivity().windowManager.defaultDisplay.rotation
         with(recyclerView) {
             // почему-то работает наоборот, я так и не понял почему
             layoutManager = if (rotation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
@@ -104,6 +102,7 @@ class FragmentContactsList : Fragment(R.layout.fragment_contacts_list) {
             * в отдельном классе
             * */
             requireActivity().supportFragmentManager.commit {
+                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 replace(R.id.fragmentContainer, FragmentEditContact::class.java,
                         bundle)
             }
@@ -120,6 +119,7 @@ class FragmentContactsList : Fragment(R.layout.fragment_contacts_list) {
                 searchView.onActionViewCollapsed()
             }
             requireActivity().supportFragmentManager.commit {
+                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 replace(R.id.fragmentContainer, FragmentAddContact::class.java, bundle)
             }
         }

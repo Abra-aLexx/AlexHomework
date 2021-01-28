@@ -2,15 +2,14 @@ package com.abra.homework_8_1
 
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 
 class FragmentEditContact : Fragment(R.layout.fragment_edit_contact) {
@@ -18,7 +17,6 @@ class FragmentEditContact : Fragment(R.layout.fragment_edit_contact) {
     private lateinit var info: EditText
     private lateinit var imgBack: ImageButton
     private lateinit var btRemove: Button
-    private lateinit var toolbar: Toolbar
     private lateinit var contactList: ArrayList<ContactItem>
     private var position = 0
     private lateinit var contactItem: ContactItem
@@ -26,11 +24,12 @@ class FragmentEditContact : Fragment(R.layout.fragment_edit_contact) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbar = view.findViewById(R.id.toolBarEdit)
-        name = view.findViewById(R.id.editTextName1)
-        info = view.findViewById(R.id.editTextInfo1)
-        imgBack = view.findViewById(R.id.imgButtonBack)
-        btRemove = view.findViewById(R.id.buttonRemove)
+        with(view) {
+            name = findViewById(R.id.editTextName1)
+            info = findViewById(R.id.editTextInfo1)
+            imgBack = findViewById(R.id.imgButtonBack)
+            btRemove = findViewById(R.id.buttonRemove)
+        }
         createFragmentManager()
         getData()
 
@@ -95,6 +94,7 @@ class FragmentEditContact : Fragment(R.layout.fragment_edit_contact) {
 
     private fun showFragment() {
         requireActivity().supportFragmentManager.commit {
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
             replace(R.id.fragmentContainer, FragmentContactsList::class.java,
                     bundleOf("list" to contactList))
         }

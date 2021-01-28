@@ -1,4 +1,5 @@
 package com.abra.homework_8_1
+
 /**
  * Класс создавался с целью удобной работай над фрагментами.
  * Под этим я имею ввиду корректное восстановление данных после смены конфигурации.
@@ -9,13 +10,23 @@ package com.abra.homework_8_1
  * Это превое, что мне пришло в голову.
  * */
 class FragmentManager {
-    companion object{
+    companion object {
         private val data = FragmentData()
     }
-    fun setCurrentFragment(currentFragment: Int){data.currentFragment = currentFragment}
+
+    fun setCurrentFragment(currentFragment: Int) {
+        data.currentFragment = currentFragment
+    }
+
     fun getCurrentFragment() = data.currentFragment
-    fun setContactList(list: ArrayList<ContactItem>){data.list = list}
+    fun setContactList(list: ArrayList<ContactItem>) {
+        data.list = list
+    }
+
     fun getContactList() = data.list
-    fun setCurrentElementPosition(position: Int){data.position = position}
+    fun setCurrentElementPosition(position: Int) {
+        data.position = position
+    }
+
     fun getCurrentElementPosition() = data.position
 }

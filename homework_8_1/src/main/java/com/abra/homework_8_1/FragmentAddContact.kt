@@ -7,9 +7,9 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 
 class FragmentAddContact : Fragment(R.layout.fragment_add_contact) {
@@ -18,18 +18,18 @@ class FragmentAddContact : Fragment(R.layout.fragment_add_contact) {
     private lateinit var group: RadioGroup
     private lateinit var imgBack: ImageButton
     private lateinit var imgAdd: ImageButton
-    private lateinit var toolbar: Toolbar
     private lateinit var contactList: ArrayList<ContactItem>
     private lateinit var fragmentManager: FragmentManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbar = view.findViewById(R.id.toolBarAdd)
-        name = view.findViewById(R.id.editTextName)
-        info = view.findViewById(R.id.editTextInfo)
-        group = view.findViewById(R.id.radioGroup)
-        imgBack = view.findViewById(R.id.imgButtonBack1)
-        imgAdd = view.findViewById(R.id.imgButtonApply)
+        with(view) {
+            name = findViewById(R.id.editTextName)
+            info = findViewById(R.id.editTextInfo)
+            group = findViewById(R.id.radioGroup)
+            imgBack = findViewById(R.id.imgButtonBack1)
+            imgAdd = findViewById(R.id.imgButtonApply)
+        }
         createFragmentManager()
         getData()
         setListeners()
@@ -92,6 +92,7 @@ class FragmentAddContact : Fragment(R.layout.fragment_add_contact) {
 
     private fun showFragment() {
         requireActivity().supportFragmentManager.commit {
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
             replace(R.id.fragmentContainer, FragmentContactsList::class.java,
                     bundleOf("list" to contactList))
         }
