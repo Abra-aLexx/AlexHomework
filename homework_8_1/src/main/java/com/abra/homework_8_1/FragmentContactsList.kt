@@ -8,13 +8,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class FragmentContactsList : Fragment(R.layout.fragment_contacts_list) {
+    private lateinit var loader: FragmentLoader
     private lateinit var recyclerView: RecyclerView
     private lateinit var contactItemAdapter: ContactItemAdapter
     private lateinit var button: FloatingActionButton
@@ -28,6 +28,7 @@ class FragmentContactsList : Fragment(R.layout.fragment_contacts_list) {
             recyclerView = findViewById(R.id.recyclerView)
             searchView = findViewById(R.id.searchView)
         }
+        loader = requireActivity() as FragmentLoader
         createFragmentManager()
         setRecyclerViewSettings()
         getData(requireArguments())
@@ -44,10 +45,10 @@ class FragmentContactsList : Fragment(R.layout.fragment_contacts_list) {
         searchView.apply {
             imeOptions = EditorInfo.IME_ACTION_DONE
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(p0: String?) = false
+                override fun onQueryTextSubmit(text: String?) = false
 
-                override fun onQueryTextChange(p0: String?): Boolean {
-                    contactItemAdapter.filter.filter(p0)
+                override fun onQueryTextChange(text: String?): Boolean {
+                    contactItemAdapter.filter.filter(text)
                     return false
                 }
             })
@@ -96,16 +97,9 @@ class FragmentContactsList : Fragment(R.layout.fragment_contacts_list) {
             if (!searchView.isIconified) {
                 searchView.onActionViewCollapsed()
             }
-            /*
-            * Не совсем уверен в правильности этого действия.
-            * Возможно нужно организовать код по смене фрагментов
-            * в отдельном классе
-            * */
-            requireActivity().supportFragmentManager.commit {
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                replace(R.id.fragmentContainer, FragmentEditContact::class.java,
-                        bundle)
-            }
+            loader.loadFragment(FragmentEditContact::class.java,
+                    FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                    bundle)
         }
     }
 
@@ -118,10 +112,9 @@ class FragmentContactsList : Fragment(R.layout.fragment_contacts_list) {
             if (!searchView.isIconified) {
                 searchView.onActionViewCollapsed()
             }
-            requireActivity().supportFragmentManager.commit {
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                replace(R.id.fragmentContainer, FragmentAddContact::class.java, bundle)
-            }
+            loader.loadFragment(FragmentAddContact::class.java,
+                    FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                    bundle)
         }
     }
 }

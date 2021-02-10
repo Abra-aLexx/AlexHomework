@@ -10,9 +10,9 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
 
 class FragmentAddContact : Fragment(R.layout.fragment_add_contact) {
+    private lateinit var loader: FragmentLoader
     private lateinit var name: EditText
     private lateinit var info: EditText
     private lateinit var group: RadioGroup
@@ -30,6 +30,7 @@ class FragmentAddContact : Fragment(R.layout.fragment_add_contact) {
             imgBack = findViewById(R.id.imgButtonBack1)
             imgAdd = findViewById(R.id.imgButtonApply)
         }
+        loader = requireActivity() as FragmentLoader
         createFragmentManager()
         getData()
         setListeners()
@@ -91,11 +92,9 @@ class FragmentAddContact : Fragment(R.layout.fragment_add_contact) {
     }
 
     private fun showFragment() {
-        requireActivity().supportFragmentManager.commit {
-            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-            replace(R.id.fragmentContainer, FragmentContactsList::class.java,
-                    bundleOf("list" to contactList))
-        }
+        loader.loadFragment(FragmentContactsList::class.java,
+                FragmentTransaction.TRANSIT_FRAGMENT_CLOSE,
+                bundleOf("list" to contactList))
     }
 }
 

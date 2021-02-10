@@ -3,9 +3,10 @@ package com.abra.homework_8_1
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FragmentLoader {
     private lateinit var fragmentManager: FragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,22 @@ class MainActivity : AppCompatActivity() {
                             bundleOf("list" to list, "position" to fragmentManager.getCurrentElementPosition()))
                 }
             }
+        }
+    }
+
+    override fun loadFragment(fragmentClass: Class<out Fragment>, transitionCode: Int, bundle: Bundle) {
+        supportFragmentManager.commit {
+            setTransition(transitionCode)
+            replace(R.id.fragmentContainer, fragmentClass, bundle)
+            addToBackStack(null)
+        }
+    }
+
+    override fun loadFragment(fragment: Fragment, transitionCode: Int) {
+        supportFragmentManager.commit {
+            setTransition(transitionCode)
+            replace(R.id.fragmentContainer, fragment)
+            addToBackStack(null)
         }
     }
 }
