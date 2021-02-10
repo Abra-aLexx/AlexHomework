@@ -12,7 +12,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
 import com.abra.homework_8_2.R
 import com.abra.homework_8_2.data.CarInfo
 import com.abra.homework_8_2.data.WorkInfo
@@ -21,6 +20,7 @@ import com.abra.homework_8_2.database.WorkInfoDAO
 import com.abra.homework_8_2.functions.setImageStatus
 
 class FragmentEditWorkInfo : Fragment(R.layout.fragment_edit_work_info) {
+    private lateinit var loader: FragmentLoader
     private lateinit var textData: TextView
     private lateinit var etWorkName: EditText
     private lateinit var etWorkDescription: EditText
@@ -59,6 +59,7 @@ class FragmentEditWorkInfo : Fragment(R.layout.fragment_edit_work_info) {
             tvCompleted = findViewById(R.id.tvCompleted1)
             tvCurrentWorkName = findViewById(R.id.tvCurrentWorkName)
         }
+        loader = requireActivity() as FragmentLoader
         initDatabase()
         setImageListeners()
         setButtonsListeners()
@@ -146,11 +147,9 @@ class FragmentEditWorkInfo : Fragment(R.layout.fragment_edit_work_info) {
     }
 
     private fun backToPreviousFragment() {
-        requireActivity().supportFragmentManager.commit {
-            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-            replace(R.id.fragmentContainer, FragmentWorkList::class.java,
-                    bundleOf("carInfo" to currentCar))
-        }
+        loader.loadFragment(FragmentWorkList::class.java,
+                FragmentTransaction.TRANSIT_FRAGMENT_CLOSE,
+                bundleOf("carInfo" to currentCar))
     }
 
     private fun removeWork() {

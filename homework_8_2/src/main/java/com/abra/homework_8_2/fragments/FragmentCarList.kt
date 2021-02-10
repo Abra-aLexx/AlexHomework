@@ -10,8 +10,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abra.homework_8_2.R
@@ -21,6 +19,7 @@ import com.abra.homework_8_2.database.DataBaseCarInfo
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class FragmentCarList : Fragment(R.layout.fragment_car_list) {
+    private lateinit var loader: FragmentLoader
     private lateinit var toolbar: Toolbar
     private lateinit var fab: FloatingActionButton
     private lateinit var recyclerView: RecyclerView
@@ -37,6 +36,7 @@ class FragmentCarList : Fragment(R.layout.fragment_car_list) {
             recyclerView = findViewById(R.id.recyclerViewCars)
             noCarsAddedText = findViewById(R.id.tvNoCarsAdded)
         }
+        loader = requireActivity() as FragmentLoader
         setSearchViewSettings()
         initDatabase()
         setRecyclerSettings()
@@ -52,10 +52,8 @@ class FragmentCarList : Fragment(R.layout.fragment_car_list) {
 
     private fun setFabListener() {
         fab.setOnClickListener {
-            requireActivity().supportFragmentManager.commit {
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                replace<FragmentAddCar>(R.id.fragmentContainer)
-            }
+            loader.loadFragment(FragmentAddCar(),
+                    FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         }
     }
 
@@ -72,18 +70,14 @@ class FragmentCarList : Fragment(R.layout.fragment_car_list) {
 
     private fun setAdapterListeners() {
         adapter.onEditIconClickListener = {
-            requireActivity().supportFragmentManager.commit {
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                replace(R.id.fragmentContainer,
-                        FragmentEditCarInfo::class.java, bundleOf("carInfo" to it))
-            }
+            loader.loadFragment(FragmentEditCarInfo::class.java,
+                    FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                    bundleOf("carInfo" to it))
         }
         adapter.onCarInfoShowWorkListClickListener = {
-            requireActivity().supportFragmentManager.commit {
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                replace(R.id.fragmentContainer,
-                        FragmentWorkList::class.java, bundleOf("carInfo" to it))
-            }
+            loader.loadFragment(FragmentWorkList::class.java,
+                    FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                    bundleOf("carInfo" to it))
         }
     }
 
@@ -92,10 +86,10 @@ class FragmentCarList : Fragment(R.layout.fragment_car_list) {
         searchView.apply {
             imeOptions = EditorInfo.IME_ACTION_DONE
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(p0: String?) = false
+                override fun onQueryTextSubmit(text: String?) = false
 
-                override fun onQueryTextChange(p0: String?): Boolean {
-                    adapter.filter.filter(p0)
+                override fun onQueryTextChange(text: String?): Boolean {
+                    adapter.filter.filter(text)
                     return false
                 }
             })

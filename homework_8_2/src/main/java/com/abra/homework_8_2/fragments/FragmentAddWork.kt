@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
 import com.abra.homework_8_2.R
 import com.abra.homework_8_2.data.CarInfo
 import com.abra.homework_8_2.data.WorkInfo
@@ -21,6 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class FragmentAddWork : Fragment(R.layout.fragment_add_work) {
+    private lateinit var loader: FragmentLoader
     private lateinit var textData: TextView
     private lateinit var etWorkName: EditText
     private lateinit var etWorkDescription: EditText
@@ -55,6 +55,7 @@ class FragmentAddWork : Fragment(R.layout.fragment_add_work) {
             tvInProgress = findViewById(R.id.tvInProgress)
             tvCompleted = findViewById(R.id.tvCompleted)
         }
+        loader = requireActivity() as FragmentLoader
         initDatabase()
         loadDataFromBundle(requireArguments())
         setImageListeners()
@@ -121,11 +122,9 @@ class FragmentAddWork : Fragment(R.layout.fragment_add_work) {
     }
 
     private fun backToPreviousFragment() {
-        requireActivity().supportFragmentManager.commit {
-            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-            replace(R.id.fragmentContainer, FragmentWorkList::class.java,
-                    bundleOf("carInfo" to currentCar))
-        }
+        loader.loadFragment(FragmentWorkList::class.java,
+                FragmentTransaction.TRANSIT_FRAGMENT_CLOSE,
+                bundleOf("carInfo" to currentCar))
     }
 
     private fun addWork() {

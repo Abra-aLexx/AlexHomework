@@ -13,8 +13,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import com.abra.homework_8_2.R
 import com.abra.homework_8_2.data.CarInfo
 import com.abra.homework_8_2.database.CarInfoDAO
@@ -27,6 +25,7 @@ import java.io.File
 private const val REQUEST_CODE_PHOTO = 1
 
 class FragmentAddCar : Fragment(R.layout.fragment_add_car) {
+    private lateinit var loader: FragmentLoader
     private lateinit var textName: EditText
     private lateinit var textProducer: EditText
     private lateinit var textModel: EditText
@@ -52,6 +51,7 @@ class FragmentAddCar : Fragment(R.layout.fragment_add_car) {
             fab = findViewById(R.id.fabLoadPhoto)
             noCarPhoto = findViewById(R.id.tvNoPhoto)
         }
+        loader = requireActivity() as FragmentLoader
         initDatabase()
         createDirectoryForPictures()
         setListeners()
@@ -91,10 +91,7 @@ class FragmentAddCar : Fragment(R.layout.fragment_add_car) {
     }
 
     private fun backToMainFragment() {
-        requireActivity().supportFragmentManager.commit {
-            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-            replace<FragmentCarList>(R.id.fragmentContainer)
-        }
+        loader.loadFragment(FragmentCarList(), FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
