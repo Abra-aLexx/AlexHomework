@@ -8,24 +8,22 @@ import androidx.fragment.app.DialogFragment
 import com.abra.homework_9.R
 import com.abra.homework_9.database.CityData
 import com.abra.homework_9.databinding.FragmentAddCityBinding
-import com.abra.homework_9.network.RetrofitInitialization
-import com.abra.homework_9.network.WeatherApi
-import com.abra.homework_9.network.WeatherRootObject
 import com.abra.homework_9.observer.ManagerFactory
 import com.abra.homework_9.repositories.DatabaseRepository
+import com.abra.homework_9.repositories.RequestRepository
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class AddCityFragment : DialogFragment() {
+    private val disposableContainer: CompositeDisposable = CompositeDisposable()
     private val fragmentScope = CoroutineScope(Dispatchers.Main + Job())
     private lateinit var repository: DatabaseRepository
-    private val retrofit = RetrofitInitialization.getInstance()
+    private lateinit var requestRepository: RequestRepository
     private var binding: FragmentAddCityBinding? = null
     private val manager = ManagerFactory.getInstance()
 
@@ -37,6 +35,7 @@ class AddCityFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         repository = DatabaseRepository(fragmentScope)
+        requestRepository = RequestRepository()
         setOkButtonListener()
         setCancelButtonListener()
     }
@@ -46,7 +45,7 @@ class AddCityFragment : DialogFragment() {
             buttonOk.setOnClickListener {
                 val cityName = etCityName.text.toString()
                 if (cityName.isNotEmpty()) {
-                    createRequest(cityName)
+                    loadData(cityName)
                 } else {
                     Snackbar.make(it, "Write city or country name!", Snackbar.LENGTH_SHORT).show()
                 }
@@ -54,34 +53,33 @@ class AddCityFragment : DialogFragment() {
         }
     }
 
-    private fun createRequest(cityName: String) {
-        val whetherApi = retrofit.create(WeatherApi::class.java)
-        val whetherApiCall = whetherApi.getWhetherForFiveDays(cityName)
-        whetherApiCall.enqueue(object : Callback<WeatherRootObject> {
-            override fun onResponse(call: Call<WeatherRootObject>, response: Response<WeatherRootObject>) {
-                if (response.isSuccessful) {
-                    fragmentScope.launch {
-                        repository.addCity(CityData(cityName, response.body()?.city?.country ?: ""))
-                        manager.setList(repository.getAllList())
-                        dismiss()
-                    }
+    private fun loadData(cityName: String) {
+        requestRepository.createRequest(cityName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { data -> prepareLoadedData(cityName, data.city.country) },
+                        { Snackbar.make(view as View, "No such city or country!", Snackbar.LENGTH_SHORT).show() }
+                )
+                .also { disposableContainer.add(it) }
+    }
 
-                } else {
-                    Snackbar.make(view as View, "No such city or country!", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<WeatherRootObject>, t: Throwable) {
-                Snackbar.make(view as View, "Error occurred while loading data", Snackbar.LENGTH_SHORT).show()
-            }
-
-        })
+    private fun prepareLoadedData(cityName: String, country: String) {
+        fragmentScope.launch {
+            repository.addCity(CityData(cityName, country))
+            manager.setList(repository.getAllList())
+            dismiss()
+        }
     }
 
     private fun setCancelButtonListener() {
         binding?.buttonCancel?.setOnClickListener {
             dismiss()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        disposableContainer.clear()
     }
 
     override fun onDestroy() {

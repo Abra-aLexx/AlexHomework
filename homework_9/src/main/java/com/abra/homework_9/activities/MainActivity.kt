@@ -9,14 +9,12 @@ import com.abra.homework_9.R
 import com.abra.homework_9.fragments.AddCityFragment
 import com.abra.homework_9.fragments.ChooseCityFragment
 import com.abra.homework_9.fragments.FragmentLoader
-import com.abra.homework_9.repositories.DatabaseRepository
 
 class MainActivity : AppCompatActivity(), FragmentLoader {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        DatabaseRepository.initDatabase(applicationContext)
         supportFragmentManager.commit {
             add(R.id.fragmentContainer, ChooseCityFragment::class.java,
                     bundleOf("isBackFromForecast" to false))
