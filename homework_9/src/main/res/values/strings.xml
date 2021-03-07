@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">homework_9</string>
+    <string name="whether_image">Whether image</string>
+    <string name="line">line</string>
+    <string name="degrees">degrees</string>
+    <string name="button">button</string>
+    <string name="choose_the_city">Choose the city</string>
+    <string name="icon">icon</string>
+    <string name="dialog_text">Please put the city name</string>
+    <string name="city_name">City name</string>
+    <string name="city_name_text">City Name</string>
+    <string name="cancel">CANCEL</string>
+    <string name="ok">OK</string>
+    <string name="weather">Weather</string>
+    <string name="icon_degrees">Icon degrees</string>
+    <string name="icon_weather">Icon weather</string>
+</resources>

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvCityName"
+        style="@style/TextViewDegreesStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Minsk, BY" />
+
+    <TextView
+        android:id="@+id/tvCurrentDate"
+        style="@style/TextViewDateAndWeatherStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCityName"
+        tools:text="01 Aug 2021" />
+
+    <ImageView
+        android:id="@+id/ivCurrentWeather"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/whether_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCurrentDate"
+        tools:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/tvCurrentTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivCurrentWeather"
+        tools:text="30" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/whether_image"
+        android:src="@drawable/degrees"
+        app:layout_constraintStart_toEndOf="@id/tvCurrentTemperature"
+        app:layout_constraintTop_toTopOf="@id/tvCurrentTemperature" />
+
+    <TextView
+        android:id="@+id/tvCurrentWeather"
+        style="@style/TextViewDateAndWeatherStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCurrentTemperature"
+        tools:text="Sunny" />
+
+    <ImageButton
+        android:id="@+id/ibChooseCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:background="@color/white"
+        android:contentDescription="@string/button"
+        android:src="@drawable/ic_baseline_add_circle_outline_36"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivCurrentWeather">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDate1"
+                style="@style/TextViewDateAndWeatherStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="02.08.2021" />
+
+            <ImageView
+                android:id="@+id/ivWeather1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:contentDescription="@string/whether_image"
+                tools:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <TextView
+                    android:id="@+id/tvTemperature1"
+                    style="@style/TextViewDegreesStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="25" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="4dp"
+                    android:contentDescription="@string/degrees"
+                    android:src="@drawable/degrees" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvWeather1"
+                style="@style/TextViewDateAndWeatherStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCurrentTemperature"
+                tools:text="Sunny" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/line"
+            android:scaleType="centerCrop"
+            android:src="@drawable/line" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDate2"
+                style="@style/TextViewDateAndWeatherStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="02.08.2021" />
+
+            <ImageView
+                android:id="@+id/ivWeather2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:contentDescription="@string/whether_image"
+                tools:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <TextView
+                    android:id="@+id/tvTemperature2"
+                    style="@style/TextViewDegreesStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="25" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="4dp"
+                    android:contentDescription="@string/degrees"
+                    android:src="@drawable/degrees" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvWeather2"
+                style="@style/TextViewDateAndWeatherStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCurrentTemperature"
+                tools:text="Sunny" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/line"
+            android:scaleType="centerCrop"
+            android:src="@drawable/line" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDate3"
+                style="@style/TextViewDateAndWeatherStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="02.08.2021" />
+
+            <ImageView
+                android:id="@+id/ivWeather3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:contentDescription="@string/whether_image"
+                tools:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <TextView
+                    android:id="@+id/tvTemperature3"
+                    style="@style/TextViewDegreesStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="25" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="4dp"
+                    android:contentDescription="@string/degrees"
+                    android:src="@drawable/degrees" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvWeather3"
+                style="@style/TextViewDateAndWeatherStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCurrentTemperature"
+                tools:text="Sunny" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/line"
+            android:scaleType="centerCrop"
+            android:src="@drawable/line" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDate4"
+                style="@style/TextViewDateAndWeatherStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="02.08.2021" />
+
+            <ImageView
+                android:id="@+id/ivWeather4"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:contentDescription="@string/whether_image"
+                tools:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <TextView
+                    android:id="@+id/tvTemperature4"
+                    style="@style/TextViewDegreesStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="25" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="4dp"
+                    android:contentDescription="@string/degrees"
+                    android:src="@drawable/degrees" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvWeather4"
+                style="@style/TextViewDateAndWeatherStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCurrentTemperature"
+                tools:text="Sunny" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/line"
+            android:scaleType="centerCrop"
+            android:src="@drawable/line" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
